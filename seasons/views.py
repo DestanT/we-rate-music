@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def get_seasons_view(request):
+    return render(request, "seasons/seasons_view.html")
