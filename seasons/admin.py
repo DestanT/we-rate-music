@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import Seasons
 
-# Register your models here.
+
+@admin.register(Seasons)
+class SeasonAdmin(admin.ModelAdmin):
+    list_display = ("title", "creator", "start_date")
+    prepopulated_fields = {"slug": ("title",)}
