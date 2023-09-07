@@ -1,0 +1,12 @@
+.box {
+    border: solid black 2px;
+}
+
+#profile img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+#profile i {
+    font-size: 8vw;
+}
