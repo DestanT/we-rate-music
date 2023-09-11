@@ -1,6 +1,4 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="container" id="profile">
     <div class="row align-items-end">
         <div class="col-2">
@@ -23,41 +21,6 @@
     </div>
 </div>
 <br>
-<div class="container box">
-    <div class="row box">
-        <div class="col-4 box">
-            album1
-        </div>
-        <div class="col-4 box">
-            album2
-        </div>
-        <div class="col-4 box">
-            album3
-        </div>
-    </div>
-    <div class="row box">
-        <div class="col-4 box">
-            album4
-        </div>
-        <div class="col-4 box">
-            album5
-        </div>
-        <div class="col-4 box">
-            album6
-        </div>
-    </div>
-    <div class="row box">
-        <div class="col-4 box">
-            album7
-        </div>
-        <div class="col-4 box">
-            album8
-        </div>
-        <div class="col-4 box">
-            album9
-        </div>
-    </div>
-</div>
-</div>
-
-{% endblock content %}
+{% block entries %}
+<!-- Below profile - entries to playlists/groups etc -->
+{% endblock entries %} {% endblock content %}
