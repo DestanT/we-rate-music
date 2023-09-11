@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import Playlist, Songs
+from .models import UserProfile, Playlist, Songs
+
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ("user",)
 
 
 @admin.register(Playlist)
