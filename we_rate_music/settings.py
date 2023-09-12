@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "django.contrib.staticfiles",
-    "groups",
     "users",
 ]
 
