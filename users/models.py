@@ -30,3 +30,25 @@ class Songs(models.Model):
 
     def __str__(self):
         return self.song_title
+
+
+class Club(models.Model):
+    club_name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    members = models.ManyToManyField(User, through="MembersInClub")
+
+    class Meta:
+        verbose_name_plural = "Clubs"
+
+    def __str__(self):
+        return self.club_name
+
+
+class MembersInClub(models.Model):
+    date_joined = models.DateTimeField(auto_now_add=True)
+    member = models.ForeignKey(User, on_delete=models.CASCADE)
+    club_name = models.ForeignKey(Club, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ["member", "club_name"]
