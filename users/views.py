@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
-from .models import UserProfile, Playlist
+from .models import UserProfile, Playlist, Club, MembersInClub
 
 
 class PlaylistView(View):
@@ -12,4 +12,16 @@ class PlaylistView(View):
             request,
             "users/playlists.html",
             {"user_profile": user_profile, "playlists": playlists},
+        )
+
+
+class MusicClubView(View):
+    def get(self, request, username, *args, **kwargs):
+        user_profile = UserProfile.objects.get(user__username=username)
+        clubs = MembersInClub.objects.filter(member=user_profile.user)
+
+        return render(
+            request,
+            "users/clubs.html",
+            {"user_profile": user_profile, "clubs": clubs},
         )

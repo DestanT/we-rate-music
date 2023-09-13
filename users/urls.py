@@ -3,5 +3,10 @@ from django.urls import path
 
 
 urlpatterns = [
-    path("playlists/<str:username>", views.PlaylistView.as_view(), name="user_profile"),
+    path(
+        "<str:username>/playlists",
+        views.PlaylistView.as_view(),
+        name="profile_playlists",
+    ),
+    path("<str:username>/clubs", views.MusicClubView.as_view(), name="profile_clubs"),
 ]
