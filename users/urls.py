@@ -6,7 +6,7 @@ urlpatterns = [
     path(
         "<str:username>/playlists",
         views.PlaylistView.as_view(),
-        name="profile_playlists",
+        name="user_playlists",
     ),
-    path("<str:username>/clubs", views.MusicClubView.as_view(), name="profile_clubs"),
+    path("<str:username>/clubs", views.MusicClubView.as_view(), name="user_clubs"),
 ]
