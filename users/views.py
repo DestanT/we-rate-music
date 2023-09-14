@@ -15,7 +15,7 @@ class PlaylistView(View):
         )
 
 
-class MusicClubView(View):
+class ClubView(View):
     def get(self, request, username, *args, **kwargs):
         user_profile = UserProfile.objects.get(user__username=username)
         clubs = MembersInClub.objects.filter(member=user_profile.user)
