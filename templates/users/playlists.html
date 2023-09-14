@@ -7,5 +7,13 @@
         </div>
         {% endfor %}
     </div>
+    <div class="row">
+        <h2>Make Playlist</h2>
+        <form class="d-inline" method="POST">
+            {% csrf_token %}
+            {{ playlist_form }}
+            <button type="submit">Save Playlist</button>
+        </form>
+    </div>
 </div>
 {% endblock entries %}
