@@ -4,7 +4,7 @@
         <div class="col-2">
             <div class="row">
                 <div class="col">
-                    <a href="{% url 'user_playlists' username=user.username %}"><i
+                    <a href="{% url 'user_playlists' username=request.resolver_match.kwargs.username %}"><i
                             class="fa-solid fa-compact-disc"></i></a>
                 </div>
             </div>
@@ -15,7 +15,7 @@
         <div class="col-2">
             <div class="row">
                 <div class="col">
-                    <a href="{% url 'user_clubs' username=user.username %}"><i
+                    <a href="{% url 'user_clubs' username=request.resolver_match.kwargs.username %}"><i
                             class="fa-sharp fa-solid fa-people-group"></i></a>
                 </div>
             </div>
