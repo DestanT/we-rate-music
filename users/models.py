@@ -1,9 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_image = CloudinaryField("profile_image", default="placeholder")
+    background_image = CloudinaryField("background_image", default="placeholder")
 
 
 class Playlist(models.Model):
