@@ -9,6 +9,7 @@ class UserProfile(models.Model):
         "profile_image",
         null=True,
         blank=True,
+        public_id="",
         overwrite=True,
         folder="we-rate-music/profiles",
     )
@@ -16,6 +17,7 @@ class UserProfile(models.Model):
         "background_image",
         null=True,
         blank=True,
+        public_id="",
         overwrite=True,
         folder="we-rate-music/backgrounds",
     )
