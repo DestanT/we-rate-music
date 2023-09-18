@@ -5,8 +5,20 @@ from cloudinary.models import CloudinaryField
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_image = CloudinaryField("profile_image", null=True, blank=True)
-    background_image = CloudinaryField("background_image", null=True, blank=True)
+    profile_image = CloudinaryField(
+        "profile_image",
+        null=True,
+        blank=True,
+        overwrite=True,
+        folder="we-rate-music/profiles",
+    )
+    background_image = CloudinaryField(
+        "background_image",
+        null=True,
+        blank=True,
+        overwrite=True,
+        folder="we-rate-music/backgrounds",
+    )
 
 
 class Playlist(models.Model):
