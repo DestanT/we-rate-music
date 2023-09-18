@@ -9,4 +9,5 @@ urlpatterns = [
         name="user_playlists",
     ),
     path("<str:username>/clubs", views.ClubView.as_view(), name="user_clubs"),
+    path("<str:username>/settings", views.SettingsView.as_view(), name="user_settings"),
 ]
