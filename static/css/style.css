@@ -1,12 +1,52 @@
+body {
+    padding-bottom: 80px;
+    background-color: #3d3739;
+}
+
+/* Navbar/Navigation Elements */
+
+i {
+    font-size: 25px;
+    color: #F7CB45;
+}
+
+nav img {
+    height: 45px;
+    width: 45px;
+    border-radius: 20%;
+    border: 2px solid #F7CB45;
+}
+
+/* Profile View */
+
+.profile-background {
+    position: relative;
+    height: 30vh;
+    width: 100%;
+}
+
+.profile-background h2 {
+    color: #F7CB45;
+}
+
+.profile-picture {
+    height: 75px;
+    width: 75px;
+    border-radius: 20%;
+    border: 2px solid #F7CB45;
+}
+
+#profile-stats {
+    text-align: center;
+    color: #F7CB45;
+}
+
+#profile-stats button {
+    font-size: 0.7rem;
+}
+
+/* TEST */
+
 .box {
     border: solid black 2px;
-}
-
-#profile img {
-    width: 100%;
-    border-radius: 50%;
-}
-
-#profile i {
-    font-size: 8vw;
 }
