@@ -15,78 +15,33 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-dark bg-warning">
-        <div class="container-fluid">
-
-
-            <a class="navbar-brand" href="#">We Rate Music</a>
-            <ul class="nav nav-pills">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Active</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                </li>
-                {% endif %}
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
-                    aria-label="Toggle navigation">
-                    <i class="fa-solid fa-user fa-xl"></i>
-                </button>
-            </ul>
-
-
-            <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
-                aria-labelledby="offcanvasDarkNavbarLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Dark offcanvas</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="d-flex mt-3" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-success" type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
+    <nav class="navbar bg-dark fixed-bottom">
+        <div class="container-fluid d-flex justify-content-between">
+            <a class="nav-link" href="#">
+                <i class="fa-solid fa-chart-column"></i>
+            </a>
+            <a class="nav-link" href="#">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
+            {% if user.is_authenticated %}
+            <a class="nav-link" href="#">
+                <img src="{{ user_profile.profile_image.url }}" alt="User's Profile Image">
+            </a>
+            {% else %}
+            <a class="nav-link" href="{% url 'account_login' %}">
+                <i class="fa-solid fa-right-to-bracket"></i>
+            </a>
+            {% endif %}
+            <a class="nav-link" href="{% url 'user_clubs' username=request.resolver_match.kwargs.username %}">
+                <i class="fa-solid fa-people-group"></i>
+            </a>
+            <a class="nav-link" href="{% url 'user_playlists' username=request.resolver_match.kwargs.username %}">
+                <i class="fa-solid fa-compact-disc"></i>
+            </a>
         </div>
     </nav>
     <main>
-        <div class="container">
+        <div class="container g-0">
             {% block content %}
             <!-- Content goes here -->
             {% endblock content %}
