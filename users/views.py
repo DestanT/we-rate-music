@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
-from .models import UserProfile, Playlist, Club, MembersInClub
-from .forms import PlaylistForm, UserProfileImagesForm
+from .models import UserProfile, Playlist, Songs, Club, MembersInClub
+from .forms import PlaylistForm, SongsForm, UserProfileImagesForm
 from cloudinary.uploader import upload
+from .spotify_api import get_access_token, search_for_item
 
 
 class PlaylistView(View):
@@ -16,30 +17,63 @@ class PlaylistView(View):
             {
                 "user_profile": user_profile,
                 "playlists": playlists,
-                "playlist_form": PlaylistForm(),
+            },
+        )
+
+
+class CreatePlaylistsView(View):
+    def get(self, request, username, *args, **kwargs):
+        user_profile = UserProfile.objects.get(user__username=username)
+
+        return render(
+            request,
+            "users/add_playlists.html",
+            {
+                "user_profile": user_profile,
+                # "playlist_form": PlaylistForm(),
+                # "songs_form": SongsForm(),
             },
         )
 
     def post(self, request, username, *args, **kwargs):
         user_profile = UserProfile.objects.get(user__username=username)
-        playlists = Playlist.objects.filter(user=user_profile.user)
+        # playlists = Playlist.objects.filter(user=user_profile.user)
 
-        playlist_form = PlaylistForm(data=request.POST)
+        # playlist_form = PlaylistForm(data=request.POST)
+        # songs_form = SongsForm(data=request.POST)
 
-        if playlist_form.is_valid():
-            new_playlist = playlist_form.save(commit=False)
-            new_playlist.user = user_profile.user
-            new_playlist.save()
-        else:
-            playlist_form = PlaylistForm()
+        search_query = request.POST.get("search_query")
+
+        if search_query:
+            access_token = get_access_token()
+            search_results = search_for_item(access_token, search_query)
+
+            # if songs_form.is_valid():
+            #     if playlist_form.is_valid():
+            #         new_playlist = playlist_form.save(commit=False)
+            #         new_playlist.user = user_profile.user
+            #         new_playlist.save()
+            #     else:
+            #         pass  # NOTES: CHANGE!
+
+            return render(
+                request,
+                "users/add_playlists.html",
+                {
+                    "user_profile": user_profile,
+                    # "playlists": playlists,
+                    "search_results": search_results,
+                    "search_query": search_query,
+                },
+            )
 
         return render(
             request,
-            "users/playlists.html",
+            "users/add_playlists.html",
             {
                 "user_profile": user_profile,
-                "playlists": playlists,
-                "playlist_form": PlaylistForm(),
+                # "playlist_form": PlaylistForm(),
+                # "songs_form": SongsForm(),
             },
         )
 
