@@ -6,12 +6,14 @@ import json
 
 
 load_dotenv()
-client_id = os.getenv("CLIENT_ID", "")
-client_secret = os.getenv("CLIENT_SECRET", "")
+CLIENT_ID = os.getenv("CLIENT_ID", "")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
 
 
-def get_token():
-    auth_string = client_id + ":" + client_secret
+# CREDIT - This video got me started with Spotify APIs:
+# https://www.youtube.com/watch?v=WAmEZBEeNmg
+def get_access_token():
+    auth_string = CLIENT_ID + ":" + CLIENT_SECRET
     auth_bytes = auth_string.encode("utf-8")
     auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
 
@@ -23,42 +25,42 @@ def get_token():
     data = {"grant_type": "client_credentials"}
     result = post(url, headers=headers, data=data)
     json_result = json.loads(result.content)
-    token = json_result["access_token"]
-    return token
+    access_token = json_result["access_token"]
+    return access_token
 
 
-def get_auth_header(token):
-    return {"Authorization": "Bearer " + token}
+def get_auth_header(access_token):
+    return {"Authorization": "Bearer " + access_token}
 
 
-def search_for_artist(token, artist_name):
+def search_for_item(access_token, item):
+    headers = get_auth_header(access_token)
+
     url = f"https://api.spotify.com/v1/search"
-    headers = get_auth_header(token)
-    query = f"?q={artist_name}&type=artist&limit=1"
-
+    query = f"?q={item}&type=track&limit=5"
     query_url = url + query
-    result = get(query_url, headers=headers)
-    json_result = json.loads(result.content)["artists"]["items"]
 
-    if len(json_result) == 0:
-        print("No artist with this name found")
-        return None
+    results = get(query_url, headers=headers)
 
-    return json_result[0]
+    if results.status_code == 200:
+        json_data = json.loads(results.content)
+        json_tracks = json_data["tracks"]["items"]
+
+        track_names = [track["name"] for track in json_tracks]
+        return track_names
+
+    elif results.status_code == 401:
+        access_token = get_access_token()
+        return search_for_item(access_token, item)
+
+    elif results.status_code == 429:
+        error_message = "Spotify API limit is reached, please try again later!"
+        return error_message
+
+    else:
+        error_message = f"Error: {results.status_code}"
+        return error_message
 
 
-def get_songs_by_artist(token, artist_id):
-    url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=US"
-    headers = get_auth_header(token)
-    result = get(url, headers=headers)
-    json_result = json.loads(result.content)["tracks"]
-    return json_result
-
-
-token = get_token()
-result = search_for_artist(token, "ACDC")
-artist_id = result["id"]
-songs = get_songs_by_artist(token, artist_id)
-
-for idx, song in enumerate(songs):
-    print(f"{idx + 1}. {song['name']}")
+access_token = get_access_token()
+results = search_for_item(access_token, "we are")
