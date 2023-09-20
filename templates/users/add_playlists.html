@@ -1,0 +1,24 @@
+{% extends "users/profile.html" %} {% block entries %}
+<div class="container g-0">
+    <div class="row">
+        <h2>Make Playlist</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <!-- {{ playlist_form }} -->
+            <!-- {{ songs_form }} -->
+            <input type="text" name="search_query" placeholder="Search songs...">
+            <button type="submit" name="search">Search</button>
+            <!-- <button type="submit">Save Playlist</button> -->
+        </form>
+        {% if search_query %}
+        <ul>
+            {% for item in search_results %}
+            <li>
+                {{ item }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock entries %}
