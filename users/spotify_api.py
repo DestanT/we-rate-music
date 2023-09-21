@@ -85,13 +85,22 @@ def get_user_playlists(access_token, user_id):
             if results.status_code == 200:
                 json_data = json.loads(results.content)
                 json_tracks = json_data["items"]
-                track_names = [track["track"]["name"] for track in json_tracks]
+
+                track_details = []
+
+                for track in json_tracks:
+                    track_name = track["track"]["name"]
+                    genres = "genres"
+                    track_details.append({"track_name": track_name, "genres": genres})
+
+                tracks = [track["track"]["name"] for track in json_tracks]
+                # genres = json_tracks["track"]["artists"]
 
                 all_playlists.append(
                     {
                         "playlist_name": playlist_name,
                         "playlist_image": playlist_image,
-                        "track_names": track_names,
+                        "track_details": track_details,
                     }
                 )
 
@@ -112,4 +121,4 @@ def get_user_playlists(access_token, user_id):
 
 access_token = get_access_token()
 results = get_user_playlists(access_token, "11120434932")
-print(results)
+print(results[0])
