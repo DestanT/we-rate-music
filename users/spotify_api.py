@@ -36,9 +36,7 @@ def get_auth_header(access_token):
 def search_for_item(access_token, item):
     headers = get_auth_header(access_token)
 
-    url = f"https://api.spotify.com/v1/search"
-    query = f"?q={item}&type=track&limit=5"
-    query_url = url + query
+    query_url = f"https://api.spotify.com/v1/search?q={item}&type=track&limit=5"
 
     results = get(query_url, headers=headers)
 
@@ -62,5 +60,56 @@ def search_for_item(access_token, item):
         return error_message
 
 
+def get_user_playlists(access_token, user_id):
+    headers = get_auth_header(access_token)
+
+    query_url = f"https://api.spotify.com/v1/users/{user_id}/playlists"
+
+    results = get(query_url, headers=headers)
+
+    if results.status_code == 200:
+        json_data = json.loads(results.content)
+        json_playlists = json_data["items"]
+
+        all_playlists = []
+
+        for playlist in json_playlists:
+            playlist_id = playlist["id"]
+            playlist_name = playlist["name"]
+            playlist_image = playlist["images"][0]["url"]
+
+            # Get Playlist Items
+            query_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+            results = get(query_url, headers=headers)
+
+            if results.status_code == 200:
+                json_data = json.loads(results.content)
+                json_tracks = json_data["items"]
+                track_names = [track["track"]["name"] for track in json_tracks]
+
+                all_playlists.append(
+                    {
+                        "playlist_name": playlist_name,
+                        "playlist_image": playlist_image,
+                        "track_names": track_names,
+                    }
+                )
+
+        return all_playlists
+
+    elif results.status_code == 401:
+        access_token = get_access_token()
+        return get_user_playlists(access_token, user_id)
+
+    elif results.status_code == 429:
+        error_message = "Spotify API limit is reached, please try again later!"
+        return error_message
+
+    else:
+        error_message = f"Error: {results.status_code}"
+        return error_message
+
+
 access_token = get_access_token()
-results = search_for_item(access_token, "we are")
+results = get_user_playlists(access_token, "11120434932")
+print(results)
