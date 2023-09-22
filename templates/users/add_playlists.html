@@ -11,13 +11,31 @@
             <!-- <button type="submit">Save Playlist</button> -->
         </form>
         {% if search_query %}
-        <ul>
+        <div class="container" id="add-playlists">
             {% for item in search_results %}
-            <li>
-                {{ item }}
-            </li>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item.playlist_id }}"
+                        aria-expanded="false" aria-controls="{{ item.playlist_id }}">
+                        <img src="{{ item.playlist_image }}"
+                            alt="Playlist cover image for {{ item.playlist_name }} - Taken from Spotify">
+                    </button>
+                </div>
+                <div class="col-9">
+                    {{ item.playlist_name }}
+                </div>
+                <div class="col-12 collapse" id="{{ item.playlist_id }}">
+                    <div class="card card-body bg-dark-subtle">
+                        <ol>
+                            {% for track in item.track_names %}
+                            <li>{{ track }}</li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
         {% endif %}
     </div>
 </div>
