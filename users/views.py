@@ -3,7 +3,7 @@ from django.views import generic, View
 from .models import UserProfile, Playlist, Songs, Club, MembersInClub
 from .forms import PlaylistForm, SongsForm, UserProfileImagesForm
 from cloudinary.uploader import upload
-from .spotify_api import get_access_token, search_for_item
+from .spotify_api import get_access_token, get_user_playlists
 
 
 class PlaylistView(View):
@@ -46,7 +46,7 @@ class CreatePlaylistsView(View):
 
         if search_query:
             access_token = get_access_token()
-            search_results = search_for_item(access_token, search_query)
+            search_results = get_user_playlists(access_token, search_query)
 
             # if songs_form.is_valid():
             #     if playlist_form.is_valid():
