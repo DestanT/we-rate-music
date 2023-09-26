@@ -9,13 +9,13 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Playlist)
 class PlaylistAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("playlist_title",)}
-    list_display = ("user", "playlist_title", "updated_on")
+    prepopulated_fields = {"slug": ("playlist_name",)}
+    list_display = ("user", "playlist_name", "updated_on")
 
 
 @admin.register(Songs)
 class SongsAdmin(admin.ModelAdmin):
-    list_display = ("song_title", "playlist")
+    list_display = ("track_name", "playlist")
 
 
 @admin.register(Club)

@@ -5,13 +5,13 @@ from django import forms
 class PlaylistForm(forms.ModelForm):
     class Meta:
         model = Playlist
-        fields = ("playlist_title",)
+        fields = ("playlist_name",)
 
 
 class SongsForm(forms.ModelForm):
     class Meta:
         model = Songs
-        fields = ("song_title",)
+        fields = ("track_name",)
 
 
 class UserProfileImagesForm(forms.ModelForm):

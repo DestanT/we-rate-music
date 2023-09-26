@@ -24,7 +24,7 @@ class UserProfile(models.Model):
 
 
 class Playlist(models.Model):
-    playlist_title = models.CharField(max_length=100)
+    playlist_name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_playlist"
@@ -36,17 +36,17 @@ class Playlist(models.Model):
         ordering = ["-created_on"]
 
     def __str__(self):
-        return self.playlist_title
+        return self.playlist_name
 
 
 class Songs(models.Model):
-    song_title = models.CharField(max_length=100)
+    track_name = models.CharField(max_length=100)
     playlist = models.ForeignKey(
         Playlist, on_delete=models.CASCADE, related_name="playlist"
     )
 
     def __str__(self):
-        return self.song_title
+        return self.track_name
 
 
 class Club(models.Model):
