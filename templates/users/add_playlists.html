@@ -4,36 +4,40 @@
         <h2>Make Playlist</h2>
         <form method="POST">
             {% csrf_token %}
-            <!-- {{ playlist_form }} -->
-            <!-- {{ songs_form }} -->
             <input type="text" name="search_query" placeholder="Search songs...">
             <button type="submit" name="search">Search</button>
-            <!-- <button type="submit">Save Playlist</button> -->
         </form>
         {% if search_query %}
         <div class="container">
             {% for item in search_results %}
             <div class="row d-flex align-items-center">
                 <div class="col-4">
+                    <!-- Collapsable Button -->
                     <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item.playlist_id }}"
                         aria-expanded="false" aria-controls="{{ item.playlist_id }}"
-                        id="toggle-add-playlist-button-{{ item.playlist_id }}">
+                        id="toggle-add-playlist-button{{ item.playlist_id }}">
                         <img src="{{ item.playlist_image }}" class="playlist-image"
                             alt="Playlist cover image for {{ item.playlist_name }} - Taken from Spotify">
                     </button>
                 </div>
                 <div class="col-5 text-warning">
-                    {{ item.playlist_name }}
+                    <h3>
+                        {{ item.playlist_name }}
+                    </h3>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-outline-warning hidden" type="submit"
-                        id="add-playlist-button-{{ item.playlist_id }}">
+                    <!-- Hidden Button to Modal Window - Activated by Collapsable Button (Inline JavaScript) -->
+                    <button class="btn btn-outline-warning hidden" type="button" data-bs-toggle="modal"
+                        data-bs-target="#addPlaylistModal{{ item.playlist_id }}"
+                        id="add-playlist-button{{ item.playlist_id }}">
                         Add Playlist
                     </button>
                 </div>
             </div>
+            <!-- Collapsable Content -->
             <div class="col-12 collapse" id="{{ item.playlist_id }}">
                 <div class="text-warning">
+                    <br>
                     <ol>
                         {% for track in item.track_names %}
                         <li>{{ track }}</li>
@@ -41,11 +45,53 @@
                     </ol>
                 </div>
             </div>
+            <!-- Modal Content -->
+            <div class="modal fade text-warning" id="addPlaylistModal{{ item.playlist_id }}" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add playlist to your profile?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-4">
+                                        <img src="{{ item.playlist_image }}" class="playlist-image"
+                                            alt="Playlist cover image for {{ item.playlist_name }} - Taken from Spotify">
+                                    </div>
+                                    <div class="col-8">
+                                        <h3>
+                                            {{ item.playlist_name }}
+                                        </h3>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ol>
+                                            {% for track in item.track_names %}
+                                            <li>{{ track }}</li>
+                                            {% endfor %}
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-warning">Add Playlist</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Toggles Visibility of "Add Playlist" Button -->
             <script>
-                var toggleButton = document.getElementById("toggle-add-playlist-button-{{ item.playlist_id }}");
+                var toggleButton = document.getElementById("toggle-add-playlist-button{{ item.playlist_id }}");
 
                 toggleButton.addEventListener("pointerdown", function () {
-                    var addPlaylistButton = document.getElementById("add-playlist-button-{{ item.playlist_id }}");
+                    var addPlaylistButton = document.getElementById("add-playlist-button{{ item.playlist_id }}");
                     addPlaylistButton.classList.toggle("hidden");
                 });
             </script>
