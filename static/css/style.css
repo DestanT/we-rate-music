@@ -1,6 +1,18 @@
 body {
     padding-bottom: 80px;
-    background-color: #3d3739;
+}
+
+/* Bootstrap Class Edits */
+
+.btn {
+    padding: 0.2rem;
+    font-size: 0.9rem;
+}
+
+/* JavaScript Controls */
+
+.hidden {
+    display: none;
 }
 
 /* Navbar/Navigation Elements */
@@ -41,16 +53,16 @@ nav img {
     color: #F7CB45;
 }
 
-#profile-stats button {
-    font-size: 0.7rem;
-}
-
 /* Playlists */
 
 #user-playlists .col-4 {
     width: 33vw;
     height: 33vw;
     margin: 0.5px;
+}
+
+.playlist-image {
+    max-width: 100%;
 }
 
 /* TEST */

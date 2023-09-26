@@ -11,29 +11,44 @@
             <!-- <button type="submit">Save Playlist</button> -->
         </form>
         {% if search_query %}
-        <div class="container" id="add-playlists">
+        <div class="container">
             {% for item in search_results %}
-            <div class="row">
-                <div class="col-3">
+            <div class="row d-flex align-items-center">
+                <div class="col-4">
                     <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item.playlist_id }}"
-                        aria-expanded="false" aria-controls="{{ item.playlist_id }}">
-                        <img src="{{ item.playlist_image }}"
+                        aria-expanded="false" aria-controls="{{ item.playlist_id }}"
+                        id="toggle-add-playlist-button-{{ item.playlist_id }}">
+                        <img src="{{ item.playlist_image }}" class="playlist-image"
                             alt="Playlist cover image for {{ item.playlist_name }} - Taken from Spotify">
                     </button>
                 </div>
-                <div class="col-9">
+                <div class="col-5 text-warning">
                     {{ item.playlist_name }}
                 </div>
-                <div class="col-12 collapse" id="{{ item.playlist_id }}">
-                    <div class="card card-body bg-dark-subtle">
-                        <ol>
-                            {% for track in item.track_names %}
-                            <li>{{ track }}</li>
-                            {% endfor %}
-                        </ol>
-                    </div>
+                <div class="col-3">
+                    <button class="btn btn-outline-warning hidden" type="submit"
+                        id="add-playlist-button-{{ item.playlist_id }}">
+                        Add Playlist
+                    </button>
                 </div>
             </div>
+            <div class="col-12 collapse" id="{{ item.playlist_id }}">
+                <div class="text-warning">
+                    <ol>
+                        {% for track in item.track_names %}
+                        <li>{{ track }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+            <script>
+                var toggleButton = document.getElementById("toggle-add-playlist-button-{{ item.playlist_id }}");
+
+                toggleButton.addEventListener("pointerdown", function () {
+                    var addPlaylistButton = document.getElementById("add-playlist-button-{{ item.playlist_id }}");
+                    addPlaylistButton.classList.toggle("hidden");
+                });
+            </script>
             {% endfor %}
         </div>
         {% endif %}
