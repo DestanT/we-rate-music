@@ -24,7 +24,7 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
             </a>
             {% if user.is_authenticated %}
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{% url 'user_profile' username=request.resolver_match.kwargs.username %}">
                 <img src="{{ user_profile.profile_image.url }}" alt="User's Profile Image">
             </a>
             {% else %}
@@ -35,7 +35,7 @@
             <a class="nav-link" href="{% url 'user_clubs' username=request.resolver_match.kwargs.username %}">
                 <i class="fa-solid fa-people-group"></i>
             </a>
-            <a class="nav-link" href="{% url 'user_playlists' username=request.resolver_match.kwargs.username %}">
+            <a class="nav-link" href="{% url 'add_playlists' username=request.resolver_match.kwargs.username %}">
                 <i class="fa-solid fa-compact-disc"></i>
             </a>
         </div>
