@@ -5,8 +5,8 @@ from django.urls import path
 urlpatterns = [
     path(
         "<str:username>/playlists",
-        views.PlaylistView.as_view(),
-        name="user_playlists",
+        views.ProfileView.as_view(),
+        name="user_profile",
     ),
     path(
         "<str:username>/add-playlists",
