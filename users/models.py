@@ -26,6 +26,12 @@ class UserProfile(models.Model):
 class Playlist(models.Model):
     playlist_name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
+    playlist_image = CloudinaryField(
+        null=True,
+        blank=True,
+        public_id="",
+        folder="we-rate-music/playlists",
+    )
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_playlist"
     )
