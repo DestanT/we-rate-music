@@ -1,0 +1,25 @@
+{% extends "users/profile.html" %} {% block entries %}
+<div class="container g-0 mt-2 text-warning">
+    <div class="row d-flex align-items-center">
+        <div class="col-5">
+            <img src="{{ playlist.playlist_image.url }}" class="playlist-image"
+                alt="Playlist cover image for {{ playlist.playlist_name }} - Taken from Spotify">
+        </div>
+        <div class="col-7">
+            <h4>
+                {{ playlist.playlist_name }}
+            </h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-warning">
+            <br>
+            <ol>
+                {% for track in tracks %}
+                <li>{{ track }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
+{% endblock entries %}
