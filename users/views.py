@@ -19,6 +19,23 @@ class ProfileView(View):
                 "playlists": playlists,
             },
         )
+    
+
+class PlaylistDetailsView(View):
+    def get(self, request, username, playlist_id, *args, **kwargs):
+        user_profile = get_object_or_404(UserProfile, user__username=username)
+        playlist = Playlist.objects.get(user=user_profile.user, id=playlist_id)
+        tracks = Songs.objects.filter(playlist=playlist)
+
+        return render(
+            request,
+            "users/playlist_details.html",
+            {
+                "user_profile": user_profile,
+                "playlist": playlist,
+                "tracks": tracks,
+            },
+        )
 
 
 class AddPlaylistsView(View):
