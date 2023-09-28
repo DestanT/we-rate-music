@@ -58,10 +58,16 @@ class AddPlaylistsView(View):
         playlist_image = request.POST.get("playlist_image")
 
         if playlist_name:
+            uploaded_image = upload(
+                playlist_image,
+                public_id=f"{username}_{playlist_name}",
+                folder="we-rate-music/playlists",
+            )
+
             new_playlist = Playlist.objects.create(
                 playlist_name=playlist_name,
-                playlist_image=playlist_image,
                 user=request.user,
+                playlist_image=uploaded_image["url"],
             )
 
             # Get all POST.items that start with "track=" and create "Song" objects with "Playlist" as PK
@@ -121,7 +127,7 @@ class SettingsView(View):
                     public_id=public_id,
                     folder="we-rate-music/profiles",
                 )
-                user_profile.profile_image = uploaded_image["public_id"]
+                user_profile.profile_image = uploaded_image["url"]
 
             if background_image:
                 public_id = f"{username}_background_image"
@@ -130,7 +136,7 @@ class SettingsView(View):
                     public_id=public_id,
                     folder="we-rate-music/backgrounds",
                 )
-                user_profile.background_image = uploaded_image["public_id"]
+                user_profile.background_image = uploaded_image["url"]
 
             user_profile.save()
 

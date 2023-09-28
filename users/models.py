@@ -27,6 +27,7 @@ class Playlist(models.Model):
     playlist_name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
     playlist_image = CloudinaryField(
+        "playlist_image",
         null=True,
         blank=True,
         public_id="",
