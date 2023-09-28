@@ -10,7 +10,7 @@ urlpatterns = [
     ),
     path(
         "<str:username>/add-playlists",
-        views.CreatePlaylistsView.as_view(),
+        views.AddPlaylistsView.as_view(),
         name="add_playlists",
     ),
     path("<str:username>/clubs", views.ClubView.as_view(), name="user_clubs"),
