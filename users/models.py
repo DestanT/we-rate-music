@@ -5,8 +5,9 @@ from cloudinary.models import CloudinaryField
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    spotify_username = models.CharField(max_length=30, blank=True)
     profile_image = CloudinaryField(
-        "profile_image",
+        "Profile Image",
         null=True,
         blank=True,
         public_id="",
@@ -14,7 +15,7 @@ class UserProfile(models.Model):
         folder="we-rate-music/profiles",
     )
     background_image = CloudinaryField(
-        "background_image",
+        "Background Image",
         null=True,
         blank=True,
         public_id="",
@@ -27,7 +28,7 @@ class Playlist(models.Model):
     playlist_name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
     playlist_image = CloudinaryField(
-        "playlist_image",
+        "Playlist Cover Image",
         null=True,
         blank=True,
         public_id="",

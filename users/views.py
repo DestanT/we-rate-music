@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
 from .models import UserProfile, Playlist, Songs, Club, MembersInClub
-from .forms import PlaylistForm, SongsForm, UserProfileImagesForm
+from .forms import UserSettingsForm
 from cloudinary.uploader import upload
 from .spotify_api import get_access_token, get_user_playlists
 
@@ -117,25 +117,40 @@ class ClubView(View):
 
 
 class SettingsView(View):
+    # Placeholder for Spotify username field
+    def get_initial_form_data(self, user_profile):
+        if user_profile.spotify_username:
+             return {
+                "spotify_username": user_profile.spotify_username
+            }
+        else:
+            return {
+                "spotify_username": "Enter your Spotify username"
+            }
+
     def get(self, request, username, *args, **kwargs):
-        user_profile = UserProfile.objects.get(user__username=username)
+        user_profile = get_object_or_404(UserProfile, user__username=username)
+        placeholder_data = self.get_initial_form_data(user_profile)
 
         return render(
             request,
             "users/settings.html",
             {
                 "user_profile": user_profile,
-                "image_form": UserProfileImagesForm(),
+                "image_form": UserSettingsForm(initial=placeholder_data),
             },
         )
 
     def post(self, request, username, *args, **kwargs):
         user_profile = UserProfile.objects.get(user__username=username)
-        image_form = UserProfileImagesForm(request.POST, request.FILES)
+        settings_form = UserSettingsForm(request.POST, request.FILES)
 
-        if image_form.is_valid():
-            profile_image = image_form.cleaned_data["profile_image"]
-            background_image = image_form.cleaned_data["background_image"]
+        if settings_form.is_valid():
+            spotify_username = settings_form.cleaned_data["spotify_username"]
+            profile_image = settings_form.cleaned_data["profile_image"]
+            background_image = settings_form.cleaned_data["background_image"]
+
+            user_profile.spotify_username = spotify_username
 
             if profile_image:
                 public_id = f"{username}_profile_image"
@@ -157,11 +172,13 @@ class SettingsView(View):
 
             user_profile.save()
 
+        placeholder_data = self.get_initial_form_data(user_profile)
+
         return render(
             request,
             "users/settings.html",
             {
                 "user_profile": user_profile,
-                "image_form": UserProfileImagesForm(),
+                "image_form": UserSettingsForm(initial=placeholder_data),
             },
         )

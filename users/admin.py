@@ -4,7 +4,7 @@ from .models import UserProfile, Playlist, Songs, Club, MembersInClub
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "profile_image", "background_image")
+    list_display = ("user", "spotify_username", "profile_image", "background_image")
 
 
 @admin.register(Playlist)
