@@ -106,11 +106,15 @@ class AddPlaylistsView(View):
                         playlist=new_playlist,
                     )
 
+        cached_data_key = f"spotify_data_{username}"
+        spotify_playlists = cache.get(cached_data_key)
+
         return render(
             request,
             "users/add_playlists.html",
             {
                 "user_profile": user_profile,
+                "spotify_playlists": spotify_playlists,
             },
         )
 
