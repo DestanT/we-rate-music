@@ -1,13 +1,13 @@
 {% extends "users/profile.html" %} {% block entries %}
 <div class="container g-0">
     <div class="row">
-        <div class="container">
+        <div class="container text-warning">
             <div class="row text-center">
                 <h2>
                     Your Spotify Playlists
                 </h2>
             </div>
-            {% for item in search_results %}
+            {% for item in spotify_playlists %}
             <div class="row d-flex align-items-center">
                 <div class="col-4">
                     <!-- Collapsable button on playlist image-->
@@ -18,7 +18,7 @@
                             alt="Playlist cover image for {{ item.playlist_name }} - Taken from Spotify">
                     </button>
                 </div>
-                <div class="col-5 text-warning">
+                <div class="col-5">
                     <h4>
                         {{ item.playlist_name }}
                     </h4>
@@ -34,7 +34,7 @@
             </div>
             <!-- Collapsable content for track names -->
             <div class="col-12 collapse" id="{{ item.playlist_id }}">
-                <div class="text-warning">
+                <div>
                     <br>
                     <ol>
                         {% for track in item.track_names %}
@@ -46,7 +46,7 @@
             <!-- Modal content for user confirmation -->
             <form method="POST">
                 {% csrf_token %}
-                <div class="modal fade text-warning" id="addPlaylistModal{{ item.playlist_id }}" tabindex="-1"
+                <div class="modal fade" id="addPlaylistModal{{ item.playlist_id }}" tabindex="-1"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content bg-dark">
@@ -106,6 +106,16 @@
                 });
             </script>
             {% endfor %}
+            <!-- Prompt user to add Spotify username in settings, if none existent -->
+            {% if missing_username %}
+            <div class="row text-center">
+                <div class="col">
+                    <p>...Cannot be found</p>
+                    <p>Please add your Spotify username in your profile's <a class="text-success"
+                            href="{% url 'user_settings' username=request.user.username %}">settings</a> tab</p>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

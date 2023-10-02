@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
+from django.core.cache import cache
 from .models import UserProfile, Playlist, Songs, Club, MembersInClub
 from .forms import UserSettingsForm
 from cloudinary.uploader import upload
@@ -42,25 +43,38 @@ class AddPlaylistsView(View):
     def get(self, request, username, *args, **kwargs):
         user_profile = get_object_or_404(UserProfile, user__username=username)
 
+        # If the user has Spotify username saved in DB; display public Spotify playlists
         if user_profile.spotify_username:
-            access_token = get_access_token()
-            search_results = get_user_playlists(access_token, user_profile.spotify_username)
+            cached_data_key = f"spotify_data_{username}"
+
+            # Use cached data, if available
+            spotify_playlists = cache.get(cached_data_key)
+
+            if spotify_playlists is None:
+                access_token = get_access_token()
+                spotify_playlists = get_user_playlists(access_token, user_profile.spotify_username)
+                
+                # Save Spotify playlists to cache for 5 minutes
+                cache.set(cached_data_key, spotify_playlists, 300)
 
             return render(
                 request,
                 "users/add_playlists.html",
                 {
                     "user_profile": user_profile,
-                    "search_results": search_results,
+                    "spotify_playlists": spotify_playlists,
                 },
             )
         
+        # Else displays message for user; prompting to update Spotify username in "Settings"
         else:
+            missing_username = True
             return render(
                 request,
                 "users/add_playlists.html",
                 {
                     "user_profile": user_profile,
+                    "missing_username": missing_username,
                 },
             )
 
