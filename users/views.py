@@ -63,6 +63,7 @@ class AddPlaylistsView(View):
                 {
                     "user_profile": user_profile,
                     "spotify_playlists": spotify_playlists,
+                    "playlist_added": False,
                 },
             )
         
@@ -75,6 +76,7 @@ class AddPlaylistsView(View):
                 {
                     "user_profile": user_profile,
                     "missing_username": missing_username,
+                    "playlist_added": False,
                 },
             )
 
@@ -115,6 +117,7 @@ class AddPlaylistsView(View):
             {
                 "user_profile": user_profile,
                 "spotify_playlists": spotify_playlists,
+                "playlist_added": True,
             },
         )
 

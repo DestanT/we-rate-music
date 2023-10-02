@@ -1,5 +1,5 @@
 {% extends "users/profile.html" %} {% block entries %}
-<div class="container g-0">
+<div class="container g-0 mb-5">
     <div class="row">
         <div class="container text-warning">
             <div class="row text-center">
@@ -10,6 +10,7 @@
             {% for item in spotify_playlists %}
             <div class="row d-flex align-items-center">
                 <div class="col-4">
+
                     <!-- Collapsable button on playlist image-->
                     <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item.playlist_id }}"
                         aria-expanded="false" aria-controls="{{ item.playlist_id }}"
@@ -17,6 +18,7 @@
                         <img src="{{ item.playlist_image }}" class="playlist-image"
                             alt="Playlist cover image for {{ item.playlist_name }} - Taken from Spotify">
                     </button>
+
                 </div>
                 <div class="col-5">
                     <h4>
@@ -24,25 +26,27 @@
                     </h4>
                 </div>
                 <div class="col-3">
+
                     <!-- Hidden button to modal window - activated by collapsable button (inline JavaScript) -->
                     <button class="btn btn-outline-warning hidden" type="button" data-bs-toggle="modal"
                         data-bs-target="#addPlaylistModal{{ item.playlist_id }}"
                         id="add-playlist-button{{ item.playlist_id }}">
                         Add Playlist
                     </button>
+
                 </div>
             </div>
+
             <!-- Collapsable content for track names -->
             <div class="col-12 collapse" id="{{ item.playlist_id }}">
-                <div>
-                    <br>
-                    <ol>
-                        {% for track in item.track_names %}
-                        <li>{{ track }}</li>
-                        {% endfor %}
-                    </ol>
-                </div>
+                <br>
+                <ol>
+                    {% for track in item.track_names %}
+                    <li>{{ track }}</li>
+                    {% endfor %}
+                </ol>
             </div>
+
             <!-- Modal content for user confirmation -->
             <form method="POST">
                 {% csrf_token %}
@@ -87,15 +91,18 @@
                                     </div>
                                 </div>
                             </div>
+
                             <!-- Close/Confirm button -->
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-warning">Add Playlist</button>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </form>
+
             <!-- Toggles visibility of "Add Playlist" button -->
             <script>
                 var toggleButton = document.getElementById("toggle-add-playlist-button{{ item.playlist_id }}");
@@ -106,6 +113,14 @@
                 });
             </script>
             {% endfor %}
+
+            <!-- Success message when playlist is added -->
+            {% if playlist_added %}
+            <div class="alert alert-success alerts-container" id="msg" role="alert">
+                Your playlist was added successfully!
+            </div>
+            {% endif %}
+
             <!-- Prompt user to add Spotify username in settings, if none existent -->
             {% if missing_username %}
             <div class="row text-center">

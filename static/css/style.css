@@ -29,6 +29,17 @@ nav img {
     border: 2px solid #F7CB45;
 }
 
+/* Alerts */
+
+.alerts-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 45px;
+    text-align: center;
+    padding: 10px;
+}
+
 /* Profile View */
 
 .profile-background {
