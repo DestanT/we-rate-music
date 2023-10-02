@@ -42,23 +42,9 @@ class AddPlaylistsView(View):
     def get(self, request, username, *args, **kwargs):
         user_profile = get_object_or_404(UserProfile, user__username=username)
 
-        return render(
-            request,
-            "users/add_playlists.html",
-            {
-                "user_profile": user_profile,
-            },
-        )
-
-    def post(self, request, username, *args, **kwargs):
-        user_profile = get_object_or_404(UserProfile, user__username=username)
-
-        # Spotify search field
-        search_query = request.POST.get("search_query")
-
-        if search_query:
+        if user_profile.spotify_username:
             access_token = get_access_token()
-            search_results = get_user_playlists(access_token, search_query)
+            search_results = get_user_playlists(access_token, user_profile.spotify_username)
 
             return render(
                 request,
@@ -66,9 +52,20 @@ class AddPlaylistsView(View):
                 {
                     "user_profile": user_profile,
                     "search_results": search_results,
-                    "search_query": search_query,
                 },
             )
+        
+        else:
+            return render(
+                request,
+                "users/add_playlists.html",
+                {
+                    "user_profile": user_profile,
+                },
+            )
+
+    def post(self, request, username, *args, **kwargs):
+        user_profile = get_object_or_404(UserProfile, user__username=username)
 
         # Add "Playlist" object
         playlist_name = request.POST.get("playlist_name")

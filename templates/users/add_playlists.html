@@ -1,14 +1,12 @@
 {% extends "users/profile.html" %} {% block entries %}
 <div class="container g-0">
     <div class="row">
-        <h2>Make Playlist</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="text" name="search_query" placeholder="Search songs...">
-            <button type="submit" name="search">Search</button>
-        </form>
-        {% if search_query %}
         <div class="container">
+            <div class="row text-center">
+                <h2>
+                    Your Spotify Playlists
+                </h2>
+            </div>
             {% for item in search_results %}
             <div class="row d-flex align-items-center">
                 <div class="col-4">
@@ -109,7 +107,6 @@
             </script>
             {% endfor %}
         </div>
-        {% endif %}
     </div>
 </div>
 {% endblock entries %}
