@@ -1,10 +1,15 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
 from django.core.cache import cache
+from django.contrib.auth.views import LoginView
 from .models import UserProfile, Playlist, Songs, Club, MembersInClub
 from .forms import UserSettingsForm
 from cloudinary.uploader import upload
 from .spotify_api import get_access_token, get_user_playlists
+
+
+class HomepageView(generic.TemplateView):
+    template_name = "index.html"
 
 
 class ProfileView(View):
@@ -124,7 +129,7 @@ class AddPlaylistsView(View):
 
 class ClubView(View):
     def get(self, request, username, *args, **kwargs):
-        user_profile = UserProfile.objects.get(user__username=username)
+        user_profile = get_object_or_404(UserProfile, user__username=username)
         clubs = MembersInClub.objects.filter(member=user_profile.user)
 
         return render(

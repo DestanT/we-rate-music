@@ -180,9 +180,12 @@ Thank you for your interest in the project, and I look forward to any contributi
 
 ## **Credits**
 
+- https://startbootstrap.com/template/full-width-pics - For homepage (index.html)
+
 ### **Content**
 
 - [Django Documentation](https://docs.djangoproject.com/en/4.2/)
+- [Mozilla Developer](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django)
 - [Bootstrap 5 Documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
 - [Spotify API Documentation](https://developer.spotify.com/documentation/web-api)
 - [Cloudinary Documentation](https://cloudinary.com/documentation)
@@ -191,3 +194,4 @@ Thank you for your interest in the project, and I look forward to any contributi
 - [W3Schools](https://www.w3schools.com/) - general enquiries/syntax
 
 <!-- CHECK that every POST method has {% csrf_token %} -->
+<!-- CHECK ALL TEMPLATES FOR COMMENTS - ARE ALL STYLE SHEETS NEEDED FOR EXAMPLE - DELETE UNNEEDED ONES -->

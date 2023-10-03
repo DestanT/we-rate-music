@@ -2,6 +2,12 @@ body {
     padding-bottom: 80px;
 }
 
+/* Homepage */
+
+header>div>img {
+    height: 30vh;
+}
+
 /* Bootstrap Class Edits */
 
 .btn {
