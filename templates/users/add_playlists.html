@@ -114,24 +114,9 @@
             </script>
             {% endfor %}
 
-            <!-- Pop-up alerts -->
-            <!-- CREDIT: Taken straight from Code Institute's "Django Blog Walkthrough" project -->
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                        {% for message in messages %}
-                        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message | safe }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
             <!-- Success message when playlist is added -->
             {% if playlist_added %}
-            <div class="alert alert-success alerts-container" id="msg" role="alert">
+            <div class="alert alert-success custom-alert" role="alert">
                 Your playlist was added successfully!
             </div>
             {% endif %}
