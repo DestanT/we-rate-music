@@ -1,5 +1,7 @@
+from typing import Any
 from django.shortcuts import render, get_object_or_404
-from django.views import generic, View
+from django.views import View
+from django.views.generic import TemplateView, ListView
 from django.core.cache import cache
 from django.contrib.auth.views import LoginView
 from .models import UserProfile, Playlist, Songs, Club, MembersInClub
@@ -8,7 +10,7 @@ from cloudinary.uploader import upload
 from .spotify_api import get_access_token, get_user_playlists
 
 
-class HomepageView(generic.TemplateView):
+class HomepageView(TemplateView):
     template_name = "index.html"
 
 
@@ -153,6 +155,29 @@ class AddPlaylistsView(View):
                 "playlist_added": False,
             },
         )
+
+
+class DiscoverView(ListView):
+    model = Playlist
+    queryset = Playlist.objects.all()
+    template_name = "users/discover.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get currently logged-in user's details
+        my_profile = get_object_or_404(UserProfile, user=self.request.user)
+        my_username = my_profile.user.username
+        # Get details for username in the dynamic URL
+        username = self.kwargs.get("username")
+        viewed_profile = get_object_or_404(UserProfile, user__username=username)
+        viewed_playlists = Playlist.objects.filter(user=viewed_profile.user)
+
+        context["my_profile"] = my_profile
+        context["my_username"] = my_username
+        context["viewed_profile"] = viewed_profile
+        context["viewed_playlists"] = viewed_playlists
+        return context
 
 
 class ClubView(View):

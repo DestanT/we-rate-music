@@ -81,6 +81,18 @@ We Rate Music aims to bring users together for their music tastes. The applicati
 
 ### **Challenges**
 
+- REDIRECT URL 03/10-04/10/23
+
+  - tried directly through settings.py: not industry standard, not advised
+  - tried tweaking the LoginView from djangos own views, found out it would be best to create a custom view that inherits from LoginView + didn't work anyway
+  - def get_success_url(self): tried messing with this in my own view and failed
+  - def form_valid(self, form): tried changing this and returning my own dynamic url and also failed
+  - pushed the issue down the line
+
+- Using different views from Django:
+  - because of my navbar in base.html requiring certain variables to be returned
+    - FIXED by adding the method get_context_data
+
 ### **Fixed Bugs**
 
 ### **Unfixed Bugs**

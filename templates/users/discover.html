@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+    <div class="row">
+        {% for playlist in playlist_list %}
+        <div class="col-4 g-1 text-warning">
+            <a href="{% url 'playlist_details' username=playlist.user.username playlist_id=playlist.id %}">
+                <img src="{{ playlist.playlist_image.url }}" class="playlist-image"
+                    alt="Playlist cover image for {{ playlist.playlist_name }} - Taken from Spotify">
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
