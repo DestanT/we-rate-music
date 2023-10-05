@@ -4,7 +4,7 @@ CREDIT: for background image opacity - https://coder-coder.com/background-image-
 <style>
     .profile-background::before {
         content: "";
-        background-image: url('{{ user_profile.background_image.url }}');
+        background-image: url('{{ viewed_profile.background_image.url }}');
         background-size: cover;
         position: absolute;
         top: 0;
@@ -27,7 +27,7 @@ CREDIT: for background image opacity - https://coder-coder.com/background-image-
                 <h2>{{ user_profile.user }}</h2>
             </div>
             <div class="col-3 d-flex justify-content-end mt-4">
-                <a href="{% url 'user_settings' username=request.user.username %}">
+                <a href="{% url 'user_settings' username=my_username %}">
                     <i class="fa-solid fa-bars"></i>
                 </a>
             </div>
@@ -39,8 +39,8 @@ CREDIT: for background image opacity - https://coder-coder.com/background-image-
             <div class="col-12 mt-5">
                 <div class="row bg-gradient">
                     <div class="col-3">
-                        {% if user_profile.profile_image %}
-                        <img src="{{ user_profile.profile_image.url }}" alt="User's Profile Image"
+                        {% if viewed_profile.profile_image %}
+                        <img src="{{ viewed_profile.profile_image.url }}" alt="User's Profile Image"
                             class="profile-picture">
                         {% else %}
                         <img src="https://res.cloudinary.com/dxgzepuov/image/upload/v1694805348/we-rate-music/placeholder-user_swscgw.png"

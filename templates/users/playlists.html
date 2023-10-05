@@ -1,7 +1,7 @@
 {% extends "users/profile.html" %} {% block entries %}
 <div class="container g-0">
     <div class="row">
-        {% for playlist in playlists %}
+        {% for playlist in viewed_playlists %}
         <div class="col-4 g-1 text-warning">
             <a
                 href="{% url 'playlist_details' username=request.resolver_match.kwargs.username playlist_id=playlist.id %}">
