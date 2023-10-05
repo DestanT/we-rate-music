@@ -20,7 +20,7 @@
             <a class="nav-link" href="{% url 'add_playlists' username=my_username %}">
                 <i class="fa-solid fa-compact-disc"></i>
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{% url 'discover' username=my_username %}">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </a>
             {% if user.is_authenticated %}
