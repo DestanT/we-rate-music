@@ -1,4 +1,16 @@
 {% extends "base.html" %} {% block content %}
+<div class="container text-warning">
+    <div class="row">
+        <div class="col-12">
+            <input type="text" id="user-search-box" class="form-control" placeholder="Discover new users">
+            <div class="col-12" id="live-search-items">
+                {% for user in all_users_list %}
+                {{ user }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         {% for playlist in playlist_list %}
@@ -11,4 +23,33 @@
         {% endfor %}
     </div>
 </div>
+<!-- CREDIT: Initial code for live search feature - https://www.youtube.com/watch?v=jqSl36xR9Ys&t=169s -->
+<script>
+    const usersArray = "{{ users_list }}";
+    const cleanedData = JSON.parse(usersArray.replace(/&#x27;/g, '"'));
+
+    const inputBox = document.getElementById("user-search-box");
+    const searchResults = document.getElementById("live-search-items");
+
+    let filteredArray = [];
+
+    inputBox.addEventListener("keyup", (e) => {
+        // Resets innerHTML - no result duplication
+        searchResults.innerHTML = "";
+
+        // Stops "whitespace" showing all results in array + not case-sensitive
+        const userInput = e.target.value.trim().toLowerCase();
+
+        if (userInput) {
+            filteredArray = cleanedData.filter(user => user.toLowerCase().includes(userInput))
+            if (filteredArray.length > 0) {
+                filteredArray.map(user => {
+                    searchResults.innerHTML += `${user}<br>`
+                })
+            } else {
+                searchResults.innerHTML = "No results found..."
+            }
+        }
+    })
+</script>
 {% endblock content %}
