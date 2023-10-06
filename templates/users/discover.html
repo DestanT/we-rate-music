@@ -41,7 +41,7 @@
             if (filteredArray.length > 0) {
                 filteredArray.map(user => {
                     // JS template literals don't work in Django URLs - this is a crude attempt, but works
-                    searchResults.innerHTML += `<a href="/profile/${user}/playlists">${user}</a><br>`
+                    searchResults.innerHTML += `<a href="/profile/${user}/playlists" style="text-decoration: none; color: #F7CB45;">${user}</a><br>`
                 });
             } else {
                 searchResults.innerHTML = "No results found..."
