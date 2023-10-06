@@ -207,3 +207,4 @@ Thank you for your interest in the project, and I look forward to any contributi
 
 <!-- CHECK that every POST method has {% csrf_token %} -->
 <!-- CHECK ALL TEMPLATES FOR COMMENTS - ARE ALL STYLE SHEETS NEEDED FOR EXAMPLE - DELETE UNNEEDED ONES -->
+<!-- Separate scripts in all templates into block scripts and add it to base.html -->

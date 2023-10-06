@@ -8,6 +8,7 @@ from .models import UserProfile, Playlist, Songs, Club, MembersInClub
 from .forms import UserSettingsForm
 from cloudinary.uploader import upload
 from .spotify_api import get_access_token, get_user_playlists
+import json
 
 
 class HomepageView(TemplateView):
@@ -20,6 +21,7 @@ class ProfilePlaylistsView(View):
         my_profile = get_object_or_404(UserProfile, user=request.user)
         my_username = my_profile.user.username
         my_playlists = Playlist.objects.filter(user=request.user)
+
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
         viewed_playlists = Playlist.objects.filter(user=viewed_profile.user)
@@ -42,6 +44,7 @@ class PlaylistDetailsView(View):
         # Get currently logged-in user's details
         my_profile = get_object_or_404(UserProfile, user=request.user)
         my_username = my_profile.user.username
+
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
         viewed_playlists = Playlist.objects.get(user=viewed_profile.user, id=playlist_id)
@@ -65,6 +68,7 @@ class AddPlaylistsView(View):
         # Get currently logged-in user's details
         my_profile = get_object_or_404(UserProfile, user=request.user)
         my_username = my_profile.user.username
+
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
 
@@ -112,6 +116,7 @@ class AddPlaylistsView(View):
         # Get currently logged-in user's details
         my_profile = get_object_or_404(UserProfile, user=request.user)
         my_username = my_profile.user.username
+
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
 
@@ -162,21 +167,28 @@ class DiscoverView(ListView):
     queryset = Playlist.objects.all()
     template_name = "users/discover.html"
 
+    # Overwrites get_context_data method
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         # Get currently logged-in user's details
         my_profile = get_object_or_404(UserProfile, user=self.request.user)
         my_username = my_profile.user.username
+
         # Get details for username in the dynamic URL
         username = self.kwargs.get("username")
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
         viewed_playlists = Playlist.objects.filter(user=viewed_profile.user)
 
+        # Get all users from UserProfile model
+        all_users = UserProfile.objects.all()
+        users_list = [user.user.username for user in all_users]
+
         context["my_profile"] = my_profile
         context["my_username"] = my_username
         context["viewed_profile"] = viewed_profile
         context["viewed_playlists"] = viewed_playlists
+        context["users_list"] = users_list
         return context
 
 
@@ -185,6 +197,7 @@ class ClubView(View):
         # Get currently logged-in user's details
         my_profile = get_object_or_404(UserProfile, user=request.user)
         my_username = my_profile.user.username
+
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
         viewed_clubs = MembersInClub.objects.filter(member=viewed_profile.user)
@@ -218,6 +231,7 @@ class SettingsView(View):
         my_profile = get_object_or_404(UserProfile, user=request.user)
         my_username = my_profile.user.username
         placeholder_data = self.get_initial_form_data(my_profile)
+
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
 
@@ -236,6 +250,7 @@ class SettingsView(View):
         # Get currently logged-in user's details
         my_profile = get_object_or_404(UserProfile, user=request.user)
         my_username = my_profile.user.username
+
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
         settings_form = UserSettingsForm(request.POST, request.FILES)
