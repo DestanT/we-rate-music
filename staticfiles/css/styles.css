@@ -1,0 +1,89 @@
+body {
+    padding-bottom: 80px;
+}
+
+/* Homepage */
+
+header>div>img {
+    height: 30vh;
+}
+
+/* Bootstrap Class Edits */
+
+.btn {
+    padding: 0.2rem;
+    font-size: 0.9rem;
+}
+
+/* JavaScript Controls */
+
+.hidden {
+    display: none;
+}
+
+/* Navbar/Navigation Elements */
+
+i {
+    font-size: 25px;
+    color: #F7CB45;
+}
+
+nav img {
+    height: 45px;
+    width: 45px;
+    border-radius: 20%;
+    border: 2px solid #F7CB45;
+}
+
+/* Alerts */
+
+.custom-alert {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 45px;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Profile View */
+
+.profile-background {
+    position: relative;
+    height: 30vh;
+    width: 100%;
+}
+
+.profile-background h2 {
+    color: #F7CB45;
+}
+
+.profile-picture {
+    height: 75px;
+    width: 75px;
+    border-radius: 20%;
+    border: 2px solid #F7CB45;
+}
+
+#profile-stats {
+    text-align: center;
+    color: #F7CB45;
+}
+
+/* Playlists */
+
+#user-playlists .col-4 {
+    width: 33vw;
+    height: 33vw;
+    margin: 0.5px;
+}
+
+.playlist-image {
+    max-width: 100%;
+}
+
+/* TEST */
+
+.box {
+    border: solid black 2px;
+}
