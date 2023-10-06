@@ -27,7 +27,7 @@
                     {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page"
-                            href="{% url 'user_profile' username=user.username %}">
+                            href="{% url 'profile_playlists' username=user.username %}">
                             My Profile</a>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}">Logout</a></li>
