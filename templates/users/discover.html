@@ -1,13 +1,17 @@
 {% extends "base.html" %} {% block content %}
 <div class="container text-warning">
-    <div class="row">
-        <div class="col-12">
-            <input type="text" id="user-search-box" class="form-control" placeholder="Discover new users">
-            <div class="col-12" id="live-search-items"></div>
+    <div class="row g-2">
+        <div class="dropdown fixed-top">
+            <input type="text" id="user-search-box" class="form-control dropdown-toggle"
+                placeholder="Discover new users" data-bs-toggle="dropdown" role="searchbox">
+            <ul class="dropdown-menu opacity-75 bg-dark" id="live-search-items">
+                <!-- JavaScript <li> injected here -->
+                <li></li>
+            </ul>
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         {% for playlist in playlist_list %}
         <div class="col-4 g-1 text-warning">
@@ -41,10 +45,10 @@
             if (filteredArray.length > 0) {
                 filteredArray.map(user => {
                     // JS template literals don't work in Django URLs - this is a crude attempt, but works
-                    searchResults.innerHTML += `<a href="/profile/${user}/playlists" style="text-decoration: none; color: #F7CB45;">${user}</a><br>`
+                    searchResults.innerHTML += `<li><a href="/profile/${user}/playlists" class="dropdown-item opacity-100 text-warning">${user}</a></li><br>`
                 });
             } else {
-                searchResults.innerHTML = "No results found..."
+                searchResults.innerHTML = "<li class='dropdown-item opacity-100 text-warning'>No results found...</li>"
             };
         };
     });
