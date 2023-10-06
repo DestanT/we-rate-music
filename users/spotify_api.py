@@ -110,8 +110,3 @@ def get_user_playlists(access_token, user_id):
     else:
         error_message = f"Error: {results.status_code}"
         return error_message
-
-
-access_token = get_access_token()
-results = get_user_playlists(access_token, "11120434932")
-print(results[0])

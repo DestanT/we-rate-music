@@ -193,6 +193,7 @@ Thank you for your interest in the project, and I look forward to any contributi
 ## **Credits**
 
 - https://startbootstrap.com/template/full-width-pics - For homepage (index.html)
+- https://www.youtube.com/watch?v=jqSl36xR9Ys&t=169s - live search feature + talk about jinja template not accepting JS template literals (${..})
 
 ### **Content**
 
