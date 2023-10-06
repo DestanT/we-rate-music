@@ -3,11 +3,7 @@
     <div class="row">
         <div class="col-12">
             <input type="text" id="user-search-box" class="form-control" placeholder="Discover new users">
-            <div class="col-12" id="live-search-items">
-                {% for user in all_users_list %}
-                {{ user }}
-                {% endfor %}
-            </div>
+            <div class="col-12" id="live-search-items"></div>
         </div>
     </div>
 </div>
@@ -41,15 +37,16 @@
         const userInput = e.target.value.trim().toLowerCase();
 
         if (userInput) {
-            filteredArray = cleanedData.filter(user => user.toLowerCase().includes(userInput))
+            filteredArray = cleanedData.filter(user => user.toLowerCase().includes(userInput));
             if (filteredArray.length > 0) {
                 filteredArray.map(user => {
-                    searchResults.innerHTML += `${user}<br>`
-                })
+                    // JS template literals don't work in Django URLs - this is a crude attempt, but works
+                    searchResults.innerHTML += `<a href="/profile/${user}/playlists">${user}</a><br>`
+                });
             } else {
                 searchResults.innerHTML = "No results found..."
-            }
-        }
-    })
+            };
+        };
+    });
 </script>
 {% endblock content %}
