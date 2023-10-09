@@ -157,7 +157,7 @@ class AddPlaylistsView(View):
                 "viewed_profile": viewed_profile,
                 "spotify_playlists": spotify_playlists,
                 "missing_username": False,
-                "playlist_added": False,
+                "playlist_added": True,
             },
         )
 
