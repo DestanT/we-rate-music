@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, ListView
 from django.core.cache import cache
 from django.contrib.auth.views import LoginView
 from .models import UserProfile, Playlist, Track, Club, MembersInClub
-from .forms import UserSettingsForm
+from .forms import UserSettingsForm, ClubForm
 from cloudinary.uploader import upload
 from .spotify_api import get_access_token, get_user_playlists
 import json
@@ -242,7 +242,7 @@ class SettingsView(View):
                 "my_profile": my_profile,
                 "my_username": my_username,
                 "viewed_profile": viewed_profile,
-                "image_form": UserSettingsForm(initial=placeholder_data),
+                "form": UserSettingsForm(initial=placeholder_data),
             },
         )
 
@@ -291,6 +291,6 @@ class SettingsView(View):
                 "my_profile": my_profile,
                 "my_username": my_username,
                 "viewed_profile": viewed_profile,
-                "image_form": UserSettingsForm(initial=placeholder_data),
+                "form": UserSettingsForm(initial=placeholder_data),
             },
         )
