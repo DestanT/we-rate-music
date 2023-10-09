@@ -4,7 +4,7 @@ from django.views import View
 from django.views.generic import TemplateView, ListView
 from django.core.cache import cache
 from django.contrib.auth.views import LoginView
-from .models import UserProfile, Playlist, Songs, Club, MembersInClub
+from .models import UserProfile, Playlist, Track, Club, MembersInClub
 from .forms import UserSettingsForm
 from cloudinary.uploader import upload
 from .spotify_api import get_access_token, get_user_playlists
@@ -48,7 +48,7 @@ class PlaylistDetailsView(View):
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
         viewed_playlists = Playlist.objects.get(user=viewed_profile.user, id=playlist_id)
-        viewed_tracks = Songs.objects.filter(playlist=viewed_playlists)
+        viewed_tracks = Track.objects.filter(playlist=viewed_playlists)
 
         return render(
             request,
@@ -140,7 +140,7 @@ class AddPlaylistsView(View):
             # Get all POST.items that start with "track=" and create "Song" objects with "Playlist" as PK
             for input_name, track_name in request.POST.items():
                 if input_name.startswith("track="):
-                    Songs.objects.create(
+                    Track.objects.create(
                         track_name=track_name,
                         playlist=new_playlist,
                     )

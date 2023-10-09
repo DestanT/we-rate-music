@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, Playlist, Songs, Club, MembersInClub
+from .models import UserProfile, Playlist, Track, Club, MembersInClub
 
 
 @admin.register(UserProfile)
@@ -13,8 +13,8 @@ class PlaylistAdmin(admin.ModelAdmin):
     list_display = ("user", "playlist_name", "updated_on")
 
 
-@admin.register(Songs)
-class SongsAdmin(admin.ModelAdmin):
+@admin.register(Track)
+class TrackAdmin(admin.ModelAdmin):
     list_display = ("track_name", "playlist")
 
 

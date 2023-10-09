@@ -47,7 +47,7 @@ class Playlist(models.Model):
         return self.playlist_name
 
 
-class Songs(models.Model):
+class Track(models.Model):
     track_name = models.CharField(max_length=100)
     playlist = models.ForeignKey(
         Playlist, on_delete=models.CASCADE, related_name="playlist"
