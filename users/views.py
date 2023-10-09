@@ -210,8 +210,13 @@ class ClubView(View):
                 "my_username": my_username,
                 "viewed_profile": viewed_profile,
                 "viewed_clubs": viewed_clubs,
+                "form": ClubForm(),
             },
         )
+    
+    def post(self, request, username, *args, **kwargs):
+        form = 
+
 
 
 class SettingsView(View):
@@ -253,12 +258,12 @@ class SettingsView(View):
 
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
-        settings_form = UserSettingsForm(request.POST, request.FILES)
+        form = UserSettingsForm(request.POST, request.FILES)
 
-        if settings_form.is_valid():
-            spotify_username = settings_form.cleaned_data["spotify_username"]
-            profile_image = settings_form.cleaned_data["profile_image"]
-            background_image = settings_form.cleaned_data["background_image"]
+        if form.is_valid():
+            spotify_username = form.cleaned_data["spotify_username"]
+            profile_image = form.cleaned_data["profile_image"]
+            background_image = form.cleaned_data["background_image"]
 
             my_profile.spotify_username = spotify_username
 
