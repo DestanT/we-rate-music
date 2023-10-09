@@ -60,6 +60,15 @@ class Track(models.Model):
 class Club(models.Model):
     club_name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True)
+    club_image = CloudinaryField(
+        "Club Image",
+        null=True,
+        blank=True,
+        public_id="",
+        overwrite=True,
+        folder="we-rate-music/club-image",
+    )
+    founder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="founder")
     date_created = models.DateTimeField(auto_now_add=True)
     members = models.ManyToManyField(User, through="MembersInClub")
 
