@@ -10,6 +10,7 @@
         {% endfor %}
 
         <!-- Create a new Club button -->
+        {% if request.user == viewed_profile.user %}
         <div class="col-4">
             <br>
             <button class="btn btn-outline-warning" type="button" data-bs-toggle="modal" data-bs-target="#addClubModal">
@@ -18,6 +19,7 @@
                 Add Club
             </button>
         </div>
+        {% endif %}
 
         <!-- Form field in a modal for the new Club -->
         <form method="POST" enctype="multipart/form-data">
