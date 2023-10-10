@@ -200,7 +200,7 @@ class ClubView(View):
 
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
-        viewed_clubs = MembersInClub.objects.filter(member=viewed_profile.user)
+        viewed_clubs = Club.objects.filter(members=viewed_profile.user)
 
         return render(
             request,
@@ -215,7 +215,58 @@ class ClubView(View):
         )
     
     def post(self, request, username, *args, **kwargs):
-        form = 
+        # Get currently logged-in user's details
+        my_profile = get_object_or_404(UserProfile, user=request.user)
+        my_username = my_profile.user.username
+
+        # Get details for username in the dynamic URL
+        viewed_profile = get_object_or_404(UserProfile, user__username=username)
+        viewed_clubs = Club.objects.filter(members=viewed_profile.user)
+
+        form = ClubForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            club_name = form.cleaned_data["club_name"]
+            club_image = form.cleaned_data["club_image"]
+            print(club_name)
+            print(club_image)
+
+            # Create the 'Club' object
+            new_club = Club.objects.create(
+                club_name=club_name,
+                founder=my_profile.user,
+            )
+
+            if club_image:
+                uploaded_image = upload(
+                    club_image,
+                    public_id=f"{club_name}_club_image",
+                    folder="we-rate-music/club-image",
+                )
+
+                new_club.club_image = uploaded_image["url"]
+            else:
+                new_club.club_image = "https://res.cloudinary.com/dxgzepuov/image/upload/v1696871384/we-rate-music/club-placeholder_ogz4pg.png"
+
+            new_club.save()
+
+            # Add founder in the members list of the club
+            MembersInClub.objects.create(
+                member=my_profile.user,
+                club_name=new_club
+            )
+
+            return render(
+            request,
+            "users/clubs.html",
+            {
+                "my_profile": my_profile,
+                "my_username": my_username,
+                "viewed_profile": viewed_profile,
+                "viewed_clubs": viewed_clubs,
+                "form": ClubForm(),
+            },
+        )
 
 
 
@@ -268,25 +319,24 @@ class SettingsView(View):
             my_profile.spotify_username = spotify_username
 
             if profile_image:
-                public_id = f"{username}_profile_image"
                 uploaded_image = upload(
                     profile_image,
-                    public_id=public_id,
+                    public_id=f"{username}_profile_image",
                     folder="we-rate-music/profiles",
                 )
                 my_profile.profile_image = uploaded_image["url"]
 
             if background_image:
-                public_id = f"{username}_background_image"
                 uploaded_image = upload(
                     background_image,
-                    public_id=public_id,
+                    public_id=f"{username}_background_image",
                     folder="we-rate-music/backgrounds",
                 )
                 my_profile.background_image = uploaded_image["url"]
 
             my_profile.save()
 
+        # Get Spotify username data or default value to display in form
         placeholder_data = self.get_initial_form_data(my_profile)
 
         return render(
