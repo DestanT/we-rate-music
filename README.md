@@ -203,6 +203,7 @@ Thank you for your interest in the project, and I look forward to any contributi
 - [Spotify API Documentation](https://developer.spotify.com/documentation/web-api)
 - [Cloudinary Documentation](https://cloudinary.com/documentation)
 - [Jinja Documentation](https://jinja.palletsprojects.com/en/3.1.x/templates/)
+- [WhiteNoise Django Documentation](https://whitenoise.readthedocs.io/en/latest/django.html)
 - [Stack Overflow](https://stackoverflow.com/) - general enquiries/syntax
 - [W3Schools](https://www.w3schools.com/) - general enquiries/syntax
 

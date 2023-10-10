@@ -51,11 +51,11 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="modal fade" id="addPlaylistModal{{ item.playlist_id }}" tabindex="-1"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    aria-labelledby="Add playlist modal" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content bg-dark">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add playlist to your profile?</h1>
+                                <h1 class="modal-title fs-5">Add playlist to your profile?</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
