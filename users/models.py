@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 from cloudinary.models import CloudinaryField
 
 
@@ -75,9 +76,13 @@ class Club(models.Model):
     class Meta:
         verbose_name_plural = "Clubs"
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.club_name)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.club_name
-
+    
 
 class MembersInClub(models.Model):
     date_joined = models.DateTimeField(auto_now_add=True)
