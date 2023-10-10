@@ -1,7 +1,7 @@
 {% extends "users/profile.html" %} {% block entries %}
-<div class="container g-0 mb-5">
+<div class="container g-0 text-warning">
     <div class="row">
-        <div class="container text-warning">
+        <div class="container">
             <div class="row text-center">
                 <h2>
                     Your Spotify Playlists
@@ -9,13 +9,13 @@
             </div>
             {% for item in spotify_playlists %}
             <div class="row d-flex align-items-center">
-                <div class="col-4">
+                <div class="col-4 g-1">
 
                     <!-- Collapsable button on playlist image-->
                     <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item.playlist_id }}"
                         aria-expanded="false" aria-controls="{{ item.playlist_id }}"
                         id="toggle-add-playlist-button{{ item.playlist_id }}">
-                        <img src="{{ item.playlist_image }}" class="playlist-image"
+                        <img src="{{ item.playlist_image }}" class="img-thumbnail"
                             alt="Playlist cover image for {{ item.playlist_name }} - Taken from Spotify">
                     </button>
 
@@ -63,7 +63,7 @@
                                 <div class="container">
                                     <div class="row d-flex align-items-center">
                                         <div class="col-4">
-                                            <img src="{{ item.playlist_image }}" class="playlist-image"
+                                            <img src="{{ item.playlist_image }}" class="img-thumbnail"
                                                 alt="Playlist cover image for {{ item.playlist_name }} - Taken from Spotify">
                                             <!-- Hidden input for playlist image -->
                                             <input type="hidden" name="playlist_image"

@@ -4,7 +4,7 @@
         <!-- Displays all clubs the user is a member of -->
         {% for club in viewed_clubs %}
         <div class="col-4 g-1 text-center">
-            <img src="{{ club.club_image }}" class="playlist-image" alt="Image for {{ club.club_name }}'s club'">
+            <img src="{{ club.club_image }}" class="img-thumbnail" alt="Image for {{ club.club_name }}'s club'">
             {{ club.club_name }}
         </div>
         {% endfor %}

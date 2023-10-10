@@ -15,6 +15,11 @@ header>div>img {
     font-size: 0.9rem;
 }
 
+.img-thumbnail {
+    padding: 0;
+    border: var(--bs-border-width) solid #F7CB45;
+}
+
 /* JavaScript Controls */
 
 .hidden {
@@ -76,10 +81,6 @@ nav img {
     width: 33vw;
     height: 33vw;
     margin: 0.5px;
-}
-
-.playlist-image {
-    max-width: 100%;
 }
 
 /* TEST */

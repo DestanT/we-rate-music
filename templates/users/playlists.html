@@ -1,11 +1,11 @@
 {% extends "users/profile.html" %} {% block entries %}
-<div class="container g-0">
+<div class="container g-0 text-warning">
     <div class="row">
         {% for playlist in viewed_playlists %}
-        <div class="col-4 g-1 text-warning">
+        <div class="col-4 g-1">
             <a
                 href="{% url 'playlist_details' username=request.resolver_match.kwargs.username playlist_id=playlist.id %}">
-                <img src="{{ playlist.playlist_image.url }}" class="playlist-image"
+                <img src="{{ playlist.playlist_image.url }}" class="img-thumbnail"
                     alt="Playlist cover image for {{ playlist.playlist_name }} - Taken from Spotify">
             </a>
         </div>
