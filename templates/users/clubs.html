@@ -1,11 +1,52 @@
 {% extends "users/profile.html" %} {% block entries %}
-<div class="container">
+<div class="container g-0 text-warning">
     <div class="row">
-        {% for club in clubs %}
-        <div class="col-4 box">
+        <!-- Displays all clubs the user is a member of -->
+        {% for club in viewed_clubs %}
+        <div class="col-4 g-1 text-center">
+            <img src="{{ club.club_image }}" class="playlist-image" alt="Image for {{ club.club_name }}'s club'">
             {{ club.club_name }}
         </div>
         {% endfor %}
+
+        <!-- Create a new Club button -->
+        <div class="col-4">
+            <br>
+            <button class="btn btn-outline-warning" type="button" data-bs-toggle="modal" data-bs-target="#addClubModal">
+                <span>&#43;</span>
+                <br>
+                Add Club
+            </button>
+        </div>
+
+        <!-- Form field in a modal for the new Club -->
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal fade" id="addClubModal" tabindex="-1" aria-labelledby="Add club modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Create A Club</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="row d-flex align-items-center">
+                                    {{ form.as_p }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Close/Confirm button -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-warning">Create Club</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock entries %}
