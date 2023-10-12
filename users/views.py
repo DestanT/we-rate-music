@@ -47,8 +47,8 @@ class PlaylistDetailsView(View):
 
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
-        viewed_playlists = Playlist.objects.get(user=viewed_profile.user, id=playlist_id)
-        viewed_tracks = Track.objects.filter(playlist=viewed_playlists)
+        viewed_playlist = Playlist.objects.get(user=viewed_profile.user, id=playlist_id)
+        viewed_tracks = Track.objects.filter(playlist=viewed_playlist)
 
         return render(
             request,
@@ -57,7 +57,7 @@ class PlaylistDetailsView(View):
                 "my_profile": my_profile,
                 "my_username": my_username,
                 "viewed_profile": viewed_profile,
-                "viewed_playlists": viewed_playlists,
+                "viewed_playlist": viewed_playlist,
                 "viewed_tracks": viewed_tracks,
             },
         )
@@ -268,6 +268,32 @@ class ClubView(View):
             },
         )
 
+
+class ClubDetailsView(View):
+    def invite_member(self, request):
+        pass
+
+    def get(self, request, username, club_slug, *args, **kwargs):
+        # Get currently logged-in user's details
+        my_profile = get_object_or_404(UserProfile, user=request.user)
+        my_username = my_profile.user.username
+
+        # Get details for username in the dynamic URL
+        viewed_profile = get_object_or_404(UserProfile, user__username=username)
+        viewed_club = Club.objects.get(members=viewed_profile.user, slug=club_slug)
+        members = MembersInClub.objects.filter(club_name=viewed_club)
+
+        return render(
+            request,
+            "users/club_details.html",
+            {
+                "my_profile": my_profile,
+                "my_username": my_username,
+                "viewed_profile": viewed_profile,
+                "viewed_club": viewed_club,
+                "members": members,
+            },
+        )
 
 
 class SettingsView(View):

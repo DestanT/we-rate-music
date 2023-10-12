@@ -1,0 +1,24 @@
+{% extends "users/profile.html" %} {% block entries %}
+<div class="container g-0 mt-2 text-warning">
+    <div class="row d-flex align-items-center">
+        <div class="col-6">
+            <img src="{{ viewed_club.club_image.url }}" class="img-thumbnail"
+                alt="Image for {{ viewed_club.club_name }}'s club'">
+        </div>
+        <div class="col-6">
+            <h3>
+                {{ viewed_club.club_name }}
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 p-3 mb-5">
+            <ol>
+                {% for member in members %}
+                <li>{{ member.member }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
+{% endblock entries %}
