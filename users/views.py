@@ -121,10 +121,6 @@ class AddPlaylistsView(View):
             )
 
     def post(self, request, username, *args, **kwargs):
-        # Get currently logged-in user's details
-        my_profile = get_object_or_404(UserProfile, user=request.user)
-        my_username = my_profile.user.username
-
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
 
@@ -160,8 +156,6 @@ class AddPlaylistsView(View):
             request,
             "users/add_playlists.html",
             {
-                "my_profile": my_profile,
-                "my_username": my_username,
                 "viewed_profile": viewed_profile,
                 "spotify_playlists": spotify_playlists,
                 "missing_username": False,
@@ -179,10 +173,6 @@ class DiscoverView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Get currently logged-in user's details
-        my_profile = get_object_or_404(UserProfile, user=self.request.user)
-        my_username = my_profile.user.username
-
         # Get details for username in the dynamic URL
         username = self.kwargs.get("username")
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
@@ -192,20 +182,15 @@ class DiscoverView(ListView):
         all_users = UserProfile.objects.all()
         users_list = [user.user.username for user in all_users]
 
-        context["my_profile"] = my_profile
-        context["my_username"] = my_username
         context["viewed_profile"] = viewed_profile
         context["viewed_playlists"] = viewed_playlists
         context["users_list"] = users_list
+
         return context
 
 
 class ClubView(View):
     def get(self, request, username, *args, **kwargs):
-        # Get currently logged-in user's details
-        my_profile = get_object_or_404(UserProfile, user=request.user)
-        my_username = my_profile.user.username
-
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
         viewed_clubs = Club.objects.filter(members=viewed_profile.user)
@@ -214,8 +199,6 @@ class ClubView(View):
             request,
             "users/clubs.html",
             {
-                "my_profile": my_profile,
-                "my_username": my_username,
                 "viewed_profile": viewed_profile,
                 "viewed_clubs": viewed_clubs,
                 "form": ClubForm(),
@@ -223,10 +206,6 @@ class ClubView(View):
         )
     
     def post(self, request, username, *args, **kwargs):
-        # Get currently logged-in user's details
-        my_profile = get_object_or_404(UserProfile, user=request.user)
-        my_username = my_profile.user.username
-
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
         viewed_clubs = Club.objects.filter(members=viewed_profile.user)
@@ -242,7 +221,7 @@ class ClubView(View):
             # Create the 'Club' object
             new_club = Club.objects.create(
                 club_name=club_name,
-                founder=my_profile.user,
+                founder=self.request.user,
             )
 
             if club_image:
@@ -260,7 +239,7 @@ class ClubView(View):
 
             # Add founder in the members list of the club
             MembersInClub.objects.create(
-                member=my_profile.user,
+                member=self.request.user,
                 club_name=new_club
             )
 
@@ -268,8 +247,6 @@ class ClubView(View):
             request,
             "users/clubs.html",
             {
-                "my_profile": my_profile,
-                "my_username": my_username,
                 "viewed_profile": viewed_profile,
                 "viewed_clubs": viewed_clubs,
                 "form": ClubForm(),
@@ -282,10 +259,6 @@ class ClubDetailsView(View):
         pass
 
     def get(self, request, username, club_slug, *args, **kwargs):
-        # Get currently logged-in user's details
-        my_profile = get_object_or_404(UserProfile, user=request.user)
-        my_username = my_profile.user.username
-
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
         viewed_club = Club.objects.get(members=viewed_profile.user, slug=club_slug)
@@ -295,8 +268,6 @@ class ClubDetailsView(View):
             request,
             "users/club_details.html",
             {
-                "my_profile": my_profile,
-                "my_username": my_username,
                 "viewed_profile": viewed_profile,
                 "viewed_club": viewed_club,
                 "members": members,
@@ -340,10 +311,7 @@ class SettingsView(View):
             }
 
     def get(self, request, username, *args, **kwargs):
-        # Get currently logged-in user's details
-        my_profile = get_object_or_404(UserProfile, user=request.user)
-        my_username = my_profile.user.username
-        placeholder_data = self.get_initial_form_data(my_profile)
+        placeholder_data = self.get_initial_form_data(request.user.userprofile)
 
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
@@ -352,8 +320,6 @@ class SettingsView(View):
             request,
             "users/settings.html",
             {
-                "my_profile": my_profile,
-                "my_username": my_username,
                 "viewed_profile": viewed_profile,
                 "form": UserSettingsForm(initial=placeholder_data),
             },
@@ -362,7 +328,6 @@ class SettingsView(View):
     def post(self, request, username, *args, **kwargs):
         # Get currently logged-in user's details
         my_profile = get_object_or_404(UserProfile, user=request.user)
-        my_username = my_profile.user.username
 
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
@@ -401,7 +366,6 @@ class SettingsView(View):
             "users/settings.html",
             {
                 "my_profile": my_profile,
-                "my_username": my_username,
                 "viewed_profile": viewed_profile,
                 "form": UserSettingsForm(initial=placeholder_data),
             },
