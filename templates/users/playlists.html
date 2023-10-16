@@ -1,4 +1,4 @@
-{% extends "users/profile.html" %} {% block entries %}
+{% extends "users/profile.html" %} {% block content %}
 <div class="container g-0 text-warning">
     <div class="row">
         {% for playlist in viewed_playlists %}
@@ -12,4 +12,4 @@
         {% endfor %}
     </div>
 </div>
-{% endblock entries %}
+{% endblock content %}
