@@ -1,16 +1,23 @@
 {% extends "base.html" %} {% block content %}
 <div class="container g-0 mt-2 text-warning">
     <div class="row d-flex align-items-center">
-        <div class="col-6">
+        <div class="col-4 g-1">
             <a href="{% url 'user_clubs' username=viewed_profile.user.username %}">
                 <img src="{{ viewed_club.club_image.url }}" class="img-thumbnail"
                     alt="Image for {{ viewed_club.club_name }}'s club'">
             </a>
         </div>
-        <div class="col-6">
+        <div class="col-5">
             <h3>
                 {{ viewed_club.club_name }}
             </h3>
+        </div>
+        <div class="col-3">
+            {% if request.user == viewed_club.founder %}
+            <a href="{% url 'club_edit' username=request.user.username club_slug=viewed_club.slug %}">
+                <i class="fa-solid fa-pencil"></i>
+            </a>
+            {% endif %}
         </div>
     </div>
     <div class="row">
@@ -22,5 +29,7 @@
             </ol>
         </div>
     </div>
+    {% block form %}
+    {% endblock form %}
 </div>
 {% endblock content %}
