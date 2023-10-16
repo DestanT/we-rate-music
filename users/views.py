@@ -1,51 +1,64 @@
 from typing import Any
 from django.shortcuts import render, get_object_or_404
 from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.urls import reverse
+from django.views.generic import TemplateView, ListView, CreateView
 from django.core.cache import cache
 from django.contrib.auth.views import LoginView
-from .models import UserProfile, Playlist, Track, Club, MembersInClub
-from .forms import UserSettingsForm, ClubForm
+from .models import UserProfile, Playlist, Track, Club, MembersInClub, ClubInvitation
+from .forms import UserSettingsForm, ClubForm, ClubInvitationForm
 from cloudinary.uploader import upload
 from .spotify_api import get_access_token, get_user_playlists
 import json
 
 
+def get_base_template_data(request, **kwargs):
+    """
+    Gets username from the URL.
+    Returns the UserProfile and Playlist objects of the viewed username.
+    Both required to render base.html.
+    """
+    url_username = request.kwargs.get("username")
+    viewed_profile = get_object_or_404(UserProfile, user__username=url_username)
+    viewed_playlists = Playlist.objects.filter(user=viewed_profile.user)
+
+    base_template_data = {
+        "viewed_profile": viewed_profile,
+        "viewed_playlists": viewed_playlists,
+    }
+
+    return base_template_data
+    
+
 class HomepageView(TemplateView):
-    template_name = "index.html"
+    template_name = "base.html"
+
+
+# class CustomLoginView(LoginView):
+#     print("Hello")
+#     def get_success_url(self):
+#         username = self.request.user.get_username()
+#         return reverse("profile_playlists", kwargs={"username": username})
 
 
 class ProfilePlaylistsView(View):
-    def get(self, request, username, *args, **kwargs):
-        # Get currently logged-in user's details
-        my_profile = get_object_or_404(UserProfile, user=request.user)
-        my_username = my_profile.user.username
+    def get(self, request, *args, **kwargs):
+        base_template_data = get_base_template_data(self, **kwargs)
         my_playlists = Playlist.objects.filter(user=request.user)
-
-        # Get details for username in the dynamic URL
-        viewed_profile = get_object_or_404(UserProfile, user__username=username)
-        viewed_playlists = Playlist.objects.filter(user=viewed_profile.user)
 
         return render(
             request,
             "users/playlists.html",
             {
-                "my_profile": my_profile,
-                "my_username": my_username,
                 "my_playlists": my_playlists,
-                "viewed_profile": viewed_profile,
-                "viewed_playlists": viewed_playlists,
+                "viewed_profile": base_template_data["viewed_profile"],
+                "viewed_playlists": base_template_data["viewed_playlists"],
             },
         )
     
 
 class PlaylistDetailsView(View):
     def get(self, request, username, playlist_id, *args, **kwargs):
-        # Get currently logged-in user's details
-        my_profile = get_object_or_404(UserProfile, user=request.user)
-        my_username = my_profile.user.username
-
-        # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
         viewed_playlist = Playlist.objects.get(user=viewed_profile.user, id=playlist_id)
         viewed_tracks = Track.objects.filter(playlist=viewed_playlist)
@@ -54,8 +67,6 @@ class PlaylistDetailsView(View):
             request,
             "users/playlist_details.html",
             {
-                "my_profile": my_profile,
-                "my_username": my_username,
                 "viewed_profile": viewed_profile,
                 "viewed_playlist": viewed_playlist,
                 "viewed_tracks": viewed_tracks,
@@ -67,14 +78,13 @@ class AddPlaylistsView(View):
     def get(self, request, username, *args, **kwargs):
         # Get currently logged-in user's details
         my_profile = get_object_or_404(UserProfile, user=request.user)
-        my_username = my_profile.user.username
 
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
 
         # If the user has Spotify username saved in DB; display public Spotify playlists
         if my_profile.spotify_username:
-            cached_data_key = f"spotify_data_{my_username}"
+            cached_data_key = f"spotify_data_{request.user.username}"
 
             # Use cached data, if available
             spotify_playlists = cache.get(cached_data_key)
@@ -91,7 +101,6 @@ class AddPlaylistsView(View):
                 "users/add_playlists.html",
                 {
                     "my_profile": my_profile,
-                    "my_username": my_username,
                     "viewed_profile": viewed_profile,
                     "spotify_playlists": spotify_playlists,
                     "playlist_added": False,
@@ -105,7 +114,6 @@ class AddPlaylistsView(View):
                 "users/add_playlists.html",
                 {
                     "my_profile": my_profile,
-                    "my_username": my_username,
                     "viewed_profile": viewed_profile,
                     "missing_username": True,
                     "playlist_added": False,
@@ -294,6 +302,29 @@ class ClubDetailsView(View):
                 "members": members,
             },
         )
+    
+
+# class ClubEditView(CreateView):
+#     model = ClubInvitation
+#     template_name = "users/club_edit.html"
+#     form_class = ClubInvitationForm
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         # Get currently logged-in user's details
+#         my_profile = get_object_or_404(UserProfile, user=self.request.user)
+#         my_username = my_profile.user.username
+#         # # Get details for username in the dynamic URL
+#         viewed_profile = self.kwargs.get("username")
+#         print(viewed_profile)
+#         club_slug = self.kwargs.get("club_slug")
+#         club = Club.objects.get(members=viewed_profile, slug=club_slug)
+
+#         context["my_profile"] = my_profile
+#         context["my_username"] = my_username
+#         context["viewed_profile"] = viewed_profile
+#         context["club"] = club
+#         return context
 
 
 class SettingsView(View):
