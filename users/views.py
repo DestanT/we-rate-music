@@ -58,9 +58,9 @@ class ProfilePlaylistsView(View):
     
 
 class PlaylistDetailsView(View):
-    def get(self, request, username, playlist_id, *args, **kwargs):
-        viewed_profile = get_object_or_404(UserProfile, user__username=username)
-        playlist = Playlist.objects.get(user=viewed_profile.user, id=playlist_id)
+    def get(self, request, *args, **kwargs):
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
+        playlist = Playlist.objects.get(user=viewed_profile.user, id=self.kwargs.get("playlist_id"))
         tracks = Track.objects.filter(playlist=playlist)
 
         return render(
@@ -75,12 +75,12 @@ class PlaylistDetailsView(View):
 
 
 class AddPlaylistsView(View):
-    def get(self, request, username, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         # Get currently logged-in user's details
         my_profile = get_object_or_404(UserProfile, user=request.user)
 
         # Get details for username in the dynamic URL
-        viewed_profile = get_object_or_404(UserProfile, user__username=username)
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
 
         # If the user has Spotify username saved in DB; display public Spotify playlists
         if my_profile.spotify_username:
@@ -120,9 +120,9 @@ class AddPlaylistsView(View):
                 },
             )
 
-    def post(self, request, username, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         # Get details for username in the dynamic URL
-        viewed_profile = get_object_or_404(UserProfile, user__username=username)
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
 
         # Add "Playlist" object
         playlist_name = request.POST.get("playlist_name")
@@ -131,7 +131,7 @@ class AddPlaylistsView(View):
         if playlist_name:
             uploaded_image = upload(
                 playlist_image,
-                public_id=f"{username}_{playlist_name}",
+                public_id=f"{request.user.username}_{playlist_name}",
                 folder="we-rate-music/playlists",
             )
 
@@ -149,7 +149,7 @@ class AddPlaylistsView(View):
                         playlist=new_playlist,
                     )
 
-        cached_data_key = f"spotify_data_{username}"
+        cached_data_key = f"spotify_data_{request.user.username}"
         spotify_playlists = cache.get(cached_data_key)
 
         return render(
@@ -174,8 +174,7 @@ class DiscoverView(ListView):
         context = super().get_context_data(**kwargs)
 
         # Get details for username in the dynamic URL
-        username = self.kwargs.get("username")
-        viewed_profile = get_object_or_404(UserProfile, user__username=username)
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
         viewed_playlists = Playlist.objects.filter(user=viewed_profile.user)
 
         # Get all users from UserProfile model
@@ -190,9 +189,9 @@ class DiscoverView(ListView):
 
 
 class ClubView(View):
-    def get(self, request, username, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         # Get details for username in the dynamic URL
-        viewed_profile = get_object_or_404(UserProfile, user__username=username)
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
         viewed_clubs = Club.objects.filter(members=viewed_profile.user)
 
         return render(
@@ -205,9 +204,9 @@ class ClubView(View):
             },
         )
     
-    def post(self, request, username, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         # Get details for username in the dynamic URL
-        viewed_profile = get_object_or_404(UserProfile, user__username=username)
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
         viewed_clubs = Club.objects.filter(members=viewed_profile.user)
 
         form = ClubForm(request.POST, request.FILES)
@@ -258,10 +257,10 @@ class ClubDetailsView(View):
     def invite_member(self, request):
         pass
 
-    def get(self, request, username, club_slug, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         # Get details for username in the dynamic URL
-        viewed_profile = get_object_or_404(UserProfile, user__username=username)
-        viewed_club = Club.objects.get(members=viewed_profile.user, slug=club_slug)
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
+        viewed_club = Club.objects.get(members=viewed_profile.user, slug=self.kwargs.get("club_slug"))
         members = MembersInClub.objects.filter(club_name=viewed_club)
 
         return render(
@@ -275,27 +274,27 @@ class ClubDetailsView(View):
         )
     
 
-# class ClubEditView(CreateView):
-#     model = ClubInvitation
-#     template_name = "users/club_edit.html"
-#     form_class = ClubInvitationForm
+class ClubEditView(CreateView):
+    model = ClubInvitation
+    template_name = "users/club_edit.html"
+    form_class = ClubInvitationForm
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         # Get currently logged-in user's details
-#         my_profile = get_object_or_404(UserProfile, user=self.request.user)
-#         my_username = my_profile.user.username
-#         # # Get details for username in the dynamic URL
-#         viewed_profile = self.kwargs.get("username")
-#         print(viewed_profile)
-#         club_slug = self.kwargs.get("club_slug")
-#         club = Club.objects.get(members=viewed_profile, slug=club_slug)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get currently logged-in user's details
+        my_profile = get_object_or_404(UserProfile, user=self.request.user)
+        my_username = my_profile.user.username
+        # # Get details for username in the dynamic URL
+        viewed_profile = self.kwargs.get("username")
+        print(viewed_profile)
+        club_slug = self.kwargs.get("club_slug")
+        club = Club.objects.get(members=viewed_profile, slug=club_slug)
 
-#         context["my_profile"] = my_profile
-#         context["my_username"] = my_username
-#         context["viewed_profile"] = viewed_profile
-#         context["club"] = club
-#         return context
+        context["my_profile"] = my_profile
+        context["my_username"] = my_username
+        context["viewed_profile"] = viewed_profile
+        context["club"] = club
+        return context
 
 
 class SettingsView(View):
@@ -310,11 +309,11 @@ class SettingsView(View):
                 "spotify_username": "Enter your Spotify username"
             }
 
-    def get(self, request, username, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         placeholder_data = self.get_initial_form_data(request.user.userprofile)
 
         # Get details for username in the dynamic URL
-        viewed_profile = get_object_or_404(UserProfile, user__username=username)
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
 
         return render(
             request,
@@ -325,12 +324,12 @@ class SettingsView(View):
             },
         )
 
-    def post(self, request, username, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         # Get currently logged-in user's details
         my_profile = get_object_or_404(UserProfile, user=request.user)
 
         # Get details for username in the dynamic URL
-        viewed_profile = get_object_or_404(UserProfile, user__username=username)
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
         form = UserSettingsForm(request.POST, request.FILES)
 
         if form.is_valid():
@@ -343,7 +342,7 @@ class SettingsView(View):
             if profile_image:
                 uploaded_image = upload(
                     profile_image,
-                    public_id=f"{username}_profile_image",
+                    public_id=f"{request.user.username}_profile_image",
                     folder="we-rate-music/profiles",
                 )
                 my_profile.profile_image = uploaded_image["url"]
@@ -351,7 +350,7 @@ class SettingsView(View):
             if background_image:
                 uploaded_image = upload(
                     background_image,
-                    public_id=f"{username}_background_image",
+                    public_id=f"{request.user.username}_background_image",
                     folder="we-rate-music/backgrounds",
                 )
                 my_profile.background_image = uploaded_image["url"]
