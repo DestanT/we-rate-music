@@ -4,7 +4,9 @@
         <!-- Displays all clubs the user is a member of -->
         {% for club in viewed_clubs %}
         <div class="col-4 g-1 text-center">
-            <img src="{{ club.club_image }}" class="img-thumbnail" alt="Image for {{ club.club_name }}'s club'">
+            <a href="{% url 'club' username=viewed_profile.user.username club_slug=club.slug %}">
+                <img src="{{ club.club_image }}" class="img-thumbnail" alt="Image for {{ club.club_name }}'s club'">
+            </a>
             {{ club.club_name }}
         </div>
         {% endfor %}

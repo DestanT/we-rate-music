@@ -2,8 +2,10 @@
 <div class="container g-0 mt-2 text-warning">
     <div class="row d-flex align-items-center">
         <div class="col-6">
-            <img src="{{ viewed_club.club_image.url }}" class="img-thumbnail"
-                alt="Image for {{ viewed_club.club_name }}'s club'">
+            <a href="{% url 'user_clubs' username=viewed_profile.user.username %}">
+                <img src="{{ viewed_club.club_image.url }}" class="img-thumbnail"
+                    alt="Image for {{ viewed_club.club_name }}'s club'">
+            </a>
         </div>
         <div class="col-6">
             <h3>
