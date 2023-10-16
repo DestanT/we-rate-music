@@ -2,19 +2,21 @@
 <div class="container g-0 mt-2 text-warning">
     <div class="row d-flex align-items-center">
         <div class="col-6">
-            <img src="{{ viewed_playlist.playlist_image.url }}" class="img-thumbnail"
-                alt="Playlist cover image for {{ viewed_playlist.playlist_name }} - Taken from Spotify">
+            <a href="{% url 'profile_playlists' username=viewed_profile.user.username %}">
+                <img src="{{ playlist.playlist_image.url }}" class="img-thumbnail"
+                    alt="Playlist cover image for {{ playlist.playlist_name }} - Taken from Spotify">
+            </a>
         </div>
         <div class="col-6">
             <h3>
-                {{ viewed_playlist.playlist_name }}
+                {{ playlist.playlist_name }}
             </h3>
         </div>
     </div>
     <div class="row">
         <div class="col-12 p-3 mb-5">
             <ol>
-                {% for track in viewed_tracks %}
+                {% for track in tracks %}
                 <li>{{ track }}</li>
                 {% endfor %}
             </ol>

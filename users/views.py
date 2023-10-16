@@ -60,16 +60,16 @@ class ProfilePlaylistsView(View):
 class PlaylistDetailsView(View):
     def get(self, request, username, playlist_id, *args, **kwargs):
         viewed_profile = get_object_or_404(UserProfile, user__username=username)
-        viewed_playlist = Playlist.objects.get(user=viewed_profile.user, id=playlist_id)
-        viewed_tracks = Track.objects.filter(playlist=viewed_playlist)
+        playlist = Playlist.objects.get(user=viewed_profile.user, id=playlist_id)
+        tracks = Track.objects.filter(playlist=playlist)
 
         return render(
             request,
             "users/playlist_details.html",
             {
                 "viewed_profile": viewed_profile,
-                "viewed_playlist": viewed_playlist,
-                "viewed_tracks": viewed_tracks,
+                "playlist": playlist,
+                "tracks": tracks,
             },
         )
 
