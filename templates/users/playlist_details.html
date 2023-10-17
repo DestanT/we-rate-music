@@ -1,13 +1,13 @@
 {% extends "base.html" %} {% block content %}
 <div class="container g-0 mt-2 text-warning">
     <div class="row d-flex align-items-center">
-        <div class="col-6">
+        <div class="col-4 g-1">
             <a href="{% url 'profile_playlists' username=viewed_profile.user.username %}">
                 <img src="{{ playlist.playlist_image.url }}" class="img-thumbnail"
                     alt="Playlist cover image for {{ playlist.playlist_name }} - Taken from Spotify">
             </a>
         </div>
-        <div class="col-6">
+        <div class="col-5">
             <h3>
                 {{ playlist.playlist_name }}
             </h3>

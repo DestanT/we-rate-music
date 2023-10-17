@@ -214,8 +214,6 @@ class ClubView(View):
         if form.is_valid():
             club_name = form.cleaned_data["club_name"]
             club_image = form.cleaned_data["club_image"]
-            print(club_name)
-            print(club_image)
 
             # Create the 'Club' object
             new_club = Club.objects.create(
@@ -274,27 +272,77 @@ class ClubDetailsView(View):
         )
     
 
-class ClubEditView(CreateView):
-    model = ClubInvitation
-    template_name = "users/club_edit.html"
-    form_class = ClubInvitationForm
+class ClubEditView(View):
+    def get(self, request, *args, **kwargs):
+        # Get details for username in the dynamic URL
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
+        viewed_club = Club.objects.get(members=viewed_profile.user, slug=self.kwargs.get("club_slug"))
+        members = MembersInClub.objects.filter(club_name=viewed_club)
+        invited_members = ClubInvitation.objects.filter(club=viewed_club, accepted=False)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Get currently logged-in user's details
-        my_profile = get_object_or_404(UserProfile, user=self.request.user)
-        my_username = my_profile.user.username
-        # # Get details for username in the dynamic URL
-        viewed_profile = self.kwargs.get("username")
-        print(viewed_profile)
-        club_slug = self.kwargs.get("club_slug")
-        club = Club.objects.get(members=viewed_profile, slug=club_slug)
+        return render(
+            request,
+            "users/club_edit.html",
+            {
+                "viewed_profile": viewed_profile,
+                "viewed_club": viewed_club,
+                "members": members,
+                "invited_members": invited_members,
+                "form": ClubInvitationForm(),
+            },
+        )
 
-        context["my_profile"] = my_profile
-        context["my_username"] = my_username
-        context["viewed_profile"] = viewed_profile
-        context["club"] = club
-        return context
+    def post(self, request, *args, **kwargs):
+        # Get details for username in the dynamic URL
+        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
+        viewed_club = Club.objects.get(members=viewed_profile.user, slug=self.kwargs.get("club_slug"))
+        members = MembersInClub.objects.filter(club_name=viewed_club)
+        invited_members = ClubInvitation.objects.filter(club=viewed_club, accepted=False)
+
+        form = ClubInvitationForm(request.POST)
+
+        if form.is_valid():
+            user = form.cleaned_data["user"]
+
+            # Create a new invitation to user
+            ClubInvitation.objects.create(
+                club=viewed_club,
+                user=user,
+            )
+
+            return render(
+            request,
+            "users/club_edit.html",
+            {
+                "viewed_profile": viewed_profile,
+                "viewed_club": viewed_club,
+                "members": members,
+                "invited_members": invited_members,
+                "form": ClubInvitationForm(),
+            },
+        )
+
+    
+
+# class ClubEditView(CreateView):
+#     model = ClubInvitation
+#     template_name = "users/club_edit.html"
+#     form_class = ClubInvitationForm
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+
+#         # Get details for username in the dynamic URL
+#         viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
+#         viewed_club = Club.objects.get(members=viewed_profile.user, slug=self.kwargs.get("club_slug"))
+#         members = MembersInClub.objects.filter(club_name=viewed_club)
+#         club = Club.objects.get(members=viewed_profile.user, slug=self.kwargs.get("club_slug"))
+
+#         context["viewed_profile"] = viewed_profile
+#         context["viewed_club"] = viewed_club
+#         context["members"] = members
+#         context["club"] = club
+#         return context
 
 
 class SettingsView(View):

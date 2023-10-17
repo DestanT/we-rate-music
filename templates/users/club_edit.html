@@ -1,0 +1,20 @@
+{% extends "users/club_details.html" %} {% block form %}
+<div class="container g-0 mt-2 text-warning">
+    <div class="row d-flex align-items-center">
+        <div class="col-12 p-3">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Invite">
+            </form>
+        </div>
+        <div class="col-12 p-3 mb-5">
+            <ol>
+                {% for invited in invited_members %}
+                <li>{{ invited.user }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
+{% endblock form %}
