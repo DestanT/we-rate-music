@@ -9,9 +9,19 @@
             </form>
         </div>
         <div class="col-12 p-3 mb-5">
+            <h4>Pending Invites</h4>
             <ol>
                 {% for invited in invited_members %}
-                <li>{{ invited.user }}</li>
+                <li>
+                    {{ invited.user }}
+                    <form method="post"
+                        action="{% url 'delete-invite' username=invited.user club_slug=invited.club.slug %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="username" value="{{ invited.user }}">
+                        <button type="submit" class="btn btn-outline-warning"><span class="fa-solid fa-ban"
+                                style="color: #ff0000;"></span></button>
+                    </form>
+                </li>
                 {% endfor %}
             </ol>
         </div>

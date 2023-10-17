@@ -1,5 +1,5 @@
 from typing import Any
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.urls import reverse
 from django.views.generic import TemplateView, ListView, CreateView
@@ -322,7 +322,19 @@ class ClubEditView(View):
             },
         )
 
-    
+
+def delete_invitation(request, username, club_slug):
+    viewed_club = Club.objects.get(slug=club_slug)
+    if request.method == "POST":
+
+        # Club founders can delete any invitations
+        if request.user == viewed_club.founder:
+            username = request.POST.get("username")
+            ClubInvitation.objects.filter(user__username=username, club=viewed_club).delete()
+
+            # Redirect to club_edit page of current user
+            return redirect("club_edit", username=request.user, club_slug=club_slug)
+
 
 # class ClubEditView(CreateView):
 #     model = ClubInvitation
