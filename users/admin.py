@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, Playlist, Track, Club, MembersInClub
+from .models import UserProfile, Playlist, Track, Club, MembersInClub, ClubInvitation
 
 
 @admin.register(UserProfile)
@@ -25,5 +25,10 @@ class ClubAdmin(admin.ModelAdmin):
 
 
 @admin.register(MembersInClub)
-class UsersInClubAdmin(admin.ModelAdmin):
+class MembersInClubAdmin(admin.ModelAdmin):
     list_display = ("date_joined", "club_name", "member")
+
+
+@admin.register(ClubInvitation)
+class ClubInvitationAdmin(admin.ModelAdmin):
+    list_display = ("club", "user", "accepted")
