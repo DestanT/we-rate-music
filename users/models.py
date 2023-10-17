@@ -97,3 +97,6 @@ class ClubInvitation(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     accepted = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ["user", "club"]
