@@ -337,7 +337,7 @@ class ClubInvitationsView(ListView):
         return context
 
 
-def delete_invitation(request, username, club_slug):
+def handle_invitation(request, username, club_slug):
     if request.method == "POST":
         # "Next" value to redirect user back to where they came from
         next = request.POST.get("next")

@@ -56,7 +56,7 @@
 
     <!-- Decline modal window -->
     <form method="POST"
-        action="{% url 'delete-invite' username=request.user.username club_slug=invitation.club.slug %}">
+        action="{% url 'handle-invite' username=request.user.username club_slug=invitation.club.slug %}">
         {% csrf_token %}
         <div class="modal fade" id="decline{{ invitation.club.pk }}" tabindex="-1"
             aria-labelledby="Decline Club Invitation" aria-hidden="true">

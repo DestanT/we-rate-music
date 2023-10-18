@@ -15,7 +15,7 @@
                 <li>
                     {{ invited.user }}
                     <form method="post"
-                        action="{% url 'delete-invite' username=invited.user club_slug=invited.club.slug %}">
+                        action="{% url 'handle-invite' username=invited.user club_slug=invited.club.slug %}">
                         {% csrf_token %}
                         <input type="hidden" name="username" value="{{ invited.user }}">
                         <input type="hidden" name="next" value="{{ request.path }}">
