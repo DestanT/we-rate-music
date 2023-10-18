@@ -5,7 +5,7 @@
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <input type="submit" value="Invite">
+                <input type="submit" value="invite">
             </form>
         </div>
         <div class="col-12 p-3 mb-5">
@@ -18,6 +18,7 @@
                         action="{% url 'delete-invite' username=invited.user club_slug=invited.club.slug %}">
                         {% csrf_token %}
                         <input type="hidden" name="username" value="{{ invited.user }}">
+                        <input type="hidden" name="next" value="{{ request.path }}">
                         <button type="submit" class="btn btn-outline-warning"><span class="fa-solid fa-ban"
                                 style="color: #ff0000;"></span></button>
                     </form>
