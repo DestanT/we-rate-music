@@ -13,10 +13,20 @@
             </h3>
         </div>
         <div class="col-3">
+            <!-- Only available to Club Founders -->
             {% if request.user == viewed_club.founder %}
+
+            <!-- Delete club button if already in /edit view, triggers modal for confirmation -->
+            {% if "/edit" in request.path %}
+            <button class="btn" type="button" data-bs-target="#deleteClubModal" data-bs-toggle="modal"><i
+                    class="fa-solid fa-trash" style="color: #ff0000;"></i></button>
+
+            <!-- Else - Edit club button -->
+            {% else %}
             <a href="{% url 'club_edit' username=request.user.username club_slug=viewed_club.slug %}">
                 <i class="fa-solid fa-pencil"></i>
             </a>
+            {% endif %}
             {% endif %}
         </div>
     </div>
@@ -30,7 +40,68 @@
             </ol>
         </div>
     </div>
-    {% block form %}
-    {% endblock form %}
+
+    <!-- Delete club confirmation modal -->
+    <div class="modal fade" id="deleteClubModal" aria-hidden="true" aria-labelledby="deleteClubModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteClubModal">
+                        Are you sure you want to delete {{viewed_club.club_name }}?
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    This will delete the club and remove all of its members.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning" data-bs-target="#secondConfirmation" data-bs-toggle="modal">Yes, I'm
+                        sure</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Second modal to make absolutely sure -->
+    <form method="POST" action="#">
+        {% csrf_token %}
+        <div class="modal fade" id="secondConfirmation" aria-hidden="true"
+            aria-labelledby="deleteClubModalSecondConfirm" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteClubModalSecondConfirm">Are you absolutely sure?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Type "DELETE" to confirm.</p>
+                        <p>This action cannot be undone.</p>
+                        <input type="text" name="delete" id="deleteConfirmation">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-warning" id="deleteButton" disabled>Confirm</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% block club_edit %}
+    {% endblock club_edit %}
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteConfirmationInput = document.getElementById("deleteConfirmation");
+        const deleteButton = document.getElementById("deleteButton");
+
+        deleteConfirmationInput.addEventListener("input", function () {
+            if (deleteConfirmationInput.value === "DELETE") {
+                deleteButton.disabled = false;
+            } else {
+                deleteButton.disabled = true;
+            }
+        });
+    });
+</script>
 {% endblock content %}

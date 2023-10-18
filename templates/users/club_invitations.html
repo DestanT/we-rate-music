@@ -16,9 +16,8 @@
 
         <!-- Accept invitation modal button -->
         <div class="col-2">
-            <button class="btn" type="button" data-bs-toggle="modal"
-                data-bs-target="#accept{{ invitation.club.pk }}">><i class="fa-solid fa-check"
-                    style="color: #37ff00;"></i></button>
+            <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#accept{{ invitation.club.pk }}"><i
+                    class="fa-solid fa-check" style="color: #37ff00;"></i></button>
         </div>
 
         <!-- Decline invitation modal button -->
@@ -35,7 +34,7 @@
         {% csrf_token %}
         <div class="modal fade" id="accept{{ invitation.club.pk }}" tabindex="-1"
             aria-labelledby="Accept Club Invitation" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg-dark">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">You're invited to the club:<br>{{ invitation.club.club_name }}
@@ -61,7 +60,7 @@
         {% csrf_token %}
         <div class="modal fade" id="decline{{ invitation.club.pk }}" tabindex="-1"
             aria-labelledby="Decline Club Invitation" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg-dark">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">Are you sure you want to decline<br>{{ invitation.club.club_name}}
