@@ -11,6 +11,6 @@ urlpatterns = [
     path("<str:username>/clubs/invitations", views.ClubInvitationsView.as_view(), name="club-invitations"),
     path("<str:username>/clubs/<str:club_slug>", views.ClubDetailsView.as_view(), name="club_details"),
     path("<str:username>/clubs/<str:club_slug>/edit", views.ClubEditView.as_view(), name="club_edit"),
-    path("<str:username>/clubs/<str:club_slug>/delete-invite", views.delete_invitation, name="delete-invite"),
+    path("<str:username>/clubs/<str:club_slug>/handle-invite", views.handle_invitation, name="handle-invite"),
     path("<str:username>/settings", views.SettingsView.as_view(), name="user_settings"),
 ]
