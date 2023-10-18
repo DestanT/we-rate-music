@@ -316,6 +316,17 @@ class ClubEditView(View):
         )
 
 
+def delete_club(request):
+    if request.method == "POST":
+        club_pk = request.POST.get("club_pk")
+        club = get_object_or_404(Club, pk=club_pk)
+
+        if request.user == club.founder:
+            club.delete()
+
+            return redirect("user_clubs", username=request.user.username)
+
+
 class ClubInvitationsView(ListView):
     model = ClubInvitation
     template_name = "users/club_invitations.html"
@@ -330,9 +341,6 @@ class ClubInvitationsView(ListView):
 
         context["viewed_profile"] = user_profile
         context["club_invitations"] = club_invitations
-
-        for invitation in club_invitations:
-            print(invitation.club.club_image.url)
 
         return context
 

@@ -64,7 +64,7 @@
     </div>
 
     <!-- Second modal to make absolutely sure -->
-    <form method="POST" action="#">
+    <form method="POST" action="{% url 'delete_club' %}">
         {% csrf_token %}
         <div class="modal fade" id="secondConfirmation" aria-hidden="true"
             aria-labelledby="deleteClubModalSecondConfirm" tabindex="-1">
@@ -80,6 +80,7 @@
                         <input type="text" name="delete" id="deleteConfirmation">
                     </div>
                     <div class="modal-footer">
+                        <input type="hidden" name="club_pk" value="{{ viewed_club.pk }}">
                         <button type="submit" class="btn btn-warning" id="deleteButton" disabled>Confirm</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
