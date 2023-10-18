@@ -8,6 +8,7 @@ urlpatterns = [
     path("<str:username>/playlists", views.ProfilePlaylistsView.as_view(), name="profile_playlists"),
     path("<str:username>/playlist_<int:playlist_id>", views.PlaylistDetailsView.as_view(), name="playlist_details"),
     path("<str:username>/clubs", views.ClubView.as_view(), name="user_clubs"),
+    path("<str:username>/clubs/invitations", views.ClubInvitationsView.as_view(), name="club-invitations"),
     path("<str:username>/clubs/<str:club_slug>", views.ClubDetailsView.as_view(), name="club_details"),
     path("<str:username>/clubs/<str:club_slug>/edit", views.ClubEditView.as_view(), name="club_edit"),
     path("<str:username>/clubs/<str:club_slug>/delete-invite", views.delete_invitation, name="delete-invite"),

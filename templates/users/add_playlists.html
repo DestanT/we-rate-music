@@ -11,7 +11,7 @@
             <div class="row d-flex align-items-center">
                 <div class="col-4 g-1">
 
-                    <!-- Collapsable button on playlist image-->
+                    <!-- Collapsable button on playlist image, displays track list -->
                     <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item.playlist_id }}"
                         aria-expanded="false" aria-controls="{{ item.playlist_id }}"
                         id="toggle-add-playlist-button{{ item.playlist_id }}">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-3">
 
-                    <!-- Hidden button to modal window - activated by collapsable button (inline JavaScript) -->
+                    <!-- Hidden button for modal confirmation window - activated by collapsable button (via inline JavaScript) -->
                     <button class="btn btn-outline-warning hidden" type="button" data-bs-toggle="modal"
                         data-bs-target="#addPlaylistModal{{ item.playlist_id }}"
                         id="add-playlist-button{{ item.playlist_id }}">
