@@ -1,15 +1,11 @@
-from typing import Any
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.urls import reverse
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView, ListView
 from django.core.cache import cache
-from django.contrib.auth.views import LoginView
 from .models import UserProfile, Playlist, Track, Club, MembersInClub, ClubInvitation
 from .forms import UserSettingsForm, ClubForm, ClubInvitationForm
 from cloudinary.uploader import upload
 from .spotify_api import get_access_token, get_user_playlists
-import json
 
 
 def get_base_template_data(request, **kwargs):
@@ -252,9 +248,6 @@ class ClubView(View):
 
 
 class ClubDetailsView(View):
-    def invite_member(self, request):
-        pass
-
     def get(self, request, *args, **kwargs):
         # Get details for username in the dynamic URL
         viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
@@ -323,38 +316,54 @@ class ClubEditView(View):
         )
 
 
-def delete_invitation(request, username, club_slug):
-    viewed_club = Club.objects.get(slug=club_slug)
-    if request.method == "POST":
-
-        # Club founders can delete any invitations
-        if request.user == viewed_club.founder:
-            username = request.POST.get("username")
-            ClubInvitation.objects.filter(user__username=username, club=viewed_club).delete()
-
-            # Redirect to club_edit page of current user
-            return redirect("club_edit", username=request.user, club_slug=club_slug)
-
-
-# class ClubEditView(CreateView):
+# class ClubInvitationsView(ListView):
 #     model = ClubInvitation
-#     template_name = "users/club_edit.html"
-#     form_class = ClubInvitationForm
+#     template_name = "users/club_invitations.html"
 
+#     # Overwrites get_context_data method
 #     def get_context_data(self, **kwargs):
 #         context = super().get_context_data(**kwargs)
 
 #         # Get details for username in the dynamic URL
-#         viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
-#         viewed_club = Club.objects.get(members=viewed_profile.user, slug=self.kwargs.get("club_slug"))
-#         members = MembersInClub.objects.filter(club_name=viewed_club)
-#         club = Club.objects.get(members=viewed_profile.user, slug=self.kwargs.get("club_slug"))
+#         user_profile = get_object_or_404(UserProfile, user__username=self.request.user)
+#         club_invitations = ClubInvitation.objects.filter(user=self.request.user, accepted=False)
 
-#         context["viewed_profile"] = viewed_profile
-#         context["viewed_club"] = viewed_club
-#         context["members"] = members
-#         context["club"] = club
+#         context["viewed_profile"] = user_profile
+#         context["club_invitations"] = club_invitations
+
+#         for invitation in club_invitations:
+#             print(invitation.club.club_image.url)
+
 #         return context
+    
+#     def post(self, request, *args, **kwargs):
+#         context = self.get_context_data()
+
+#         # Accepted/Declined
+#         accepted_club_id = request.POST.get("accepted")
+#         declined_club_id = request.POST.get("declined")
+
+#         if accepted_club_id:
+#             pass
+
+#         if declined_club_id:
+#             # delete_invitation()
+#             pass
+
+
+
+def delete_invitation(request, username, club_slug):
+    if request.method == "POST":
+        # "Next" value to redirect user back to where they came from
+        next = request.POST.get("next")
+
+        # Club founders can delete any invitations
+        viewed_club = Club.objects.get(slug=club_slug)
+        if request.user == viewed_club.founder:
+            username = request.POST.get("username")
+            ClubInvitation.objects.filter(user__username=username, club=viewed_club).delete()
+
+            return redirect(next)
 
 
 class SettingsView(View):
