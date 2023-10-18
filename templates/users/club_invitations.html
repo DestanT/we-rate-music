@@ -1,0 +1,85 @@
+{% extends "base.html" %} {% block content %}
+<div class="container g-0 mt-2 text-warning">
+    <h4>Club Invitations</h4>
+    {% for invitation in club_invitations %}
+    <div class="row d-flex align-items-center">
+        <div class="col-3 g-1">
+            <a href="#">
+                <img src="{{ invitation.club.club_image.url }}" class="img-thumbnail"
+                    alt="Image for {{ invitation.club.club_name }}'s club'">
+            </a>
+        </div>
+        <div class="col-5">
+            <h4>{{ invitation.club.club_name }}</h4>
+            <p>{{ invitation.club.founder }}'s Club</p>
+        </div>
+
+        <!-- Accept invitation modal button -->
+        <div class="col-2">
+            <button class="btn" type="button" data-bs-toggle="modal"
+                data-bs-target="#accept{{ invitation.club.pk }}">><i class="fa-solid fa-check"
+                    style="color: #37ff00;"></i></button>
+        </div>
+
+        <!-- Decline invitation modal button -->
+        <div class="col-2">
+            <button class="btn" type="button" data-bs-toggle="modal"
+                data-bs-target="#decline{{ invitation.club.pk }}"><i class="fa-solid fa-xmark"
+                    style="color: #ff0000;"></i></button>
+        </div>
+    </div>
+
+    <!-- Accept modal window -->
+    <form method="POST">
+        {% csrf_token %}
+        <div class="modal fade" id="accept{{ invitation.club.pk }}" tabindex="-1"
+            aria-labelledby="Accept Club Invitation" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">You're invited to the club:<br>{{ invitation.club.club_name }}
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Close/Confirm button -->
+                    <div class="modal-footer">
+                        <input type="hidden" name="accepted" value="{{ invitation.club.pk }}">
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" class="btn btn-warning">Accept</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Decline modal window -->
+    <form method="POST"
+        action="{% url 'delete-invite' username=request.user.username club_slug=invitation.club.slug %}">
+        {% csrf_token %}
+        <div class="modal fade" id="decline{{ invitation.club.pk }}" tabindex="-1"
+            aria-labelledby="Decline Club Invitation" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Are you sure you want to decline<br>{{ invitation.club.club_name}}
+                            club invitation?
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Close/Confirm button -->
+                    <div class="modal-footer">
+                        <input type="hidden" name="declined" value="{{ invitation.club.pk }}">
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" class="btn btn-warning">Yes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    {% endfor %}
+</div>
+{% endblock content %}

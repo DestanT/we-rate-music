@@ -316,40 +316,25 @@ class ClubEditView(View):
         )
 
 
-# class ClubInvitationsView(ListView):
-#     model = ClubInvitation
-#     template_name = "users/club_invitations.html"
+class ClubInvitationsView(ListView):
+    model = ClubInvitation
+    template_name = "users/club_invitations.html"
 
-#     # Overwrites get_context_data method
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
+    # Overwrites get_context_data method
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-#         # Get details for username in the dynamic URL
-#         user_profile = get_object_or_404(UserProfile, user__username=self.request.user)
-#         club_invitations = ClubInvitation.objects.filter(user=self.request.user, accepted=False)
+        # Get details for username in the dynamic URL
+        user_profile = get_object_or_404(UserProfile, user__username=self.request.user)
+        club_invitations = ClubInvitation.objects.filter(user=self.request.user, accepted=False)
 
-#         context["viewed_profile"] = user_profile
-#         context["club_invitations"] = club_invitations
+        context["viewed_profile"] = user_profile
+        context["club_invitations"] = club_invitations
 
-#         for invitation in club_invitations:
-#             print(invitation.club.club_image.url)
+        for invitation in club_invitations:
+            print(invitation.club.club_image.url)
 
-#         return context
-    
-#     def post(self, request, *args, **kwargs):
-#         context = self.get_context_data()
-
-#         # Accepted/Declined
-#         accepted_club_id = request.POST.get("accepted")
-#         declined_club_id = request.POST.get("declined")
-
-#         if accepted_club_id:
-#             pass
-
-#         if declined_club_id:
-#             # delete_invitation()
-#             pass
-
+        return context
 
 
 def delete_invitation(request, username, club_slug):
@@ -357,13 +342,25 @@ def delete_invitation(request, username, club_slug):
         # "Next" value to redirect user back to where they came from
         next = request.POST.get("next")
 
-        # Club founders can delete any invitations
+        # ClubEditView - Club founders can delete any invitations
         viewed_club = Club.objects.get(slug=club_slug)
         if request.user == viewed_club.founder:
             username = request.POST.get("username")
             ClubInvitation.objects.filter(user__username=username, club=viewed_club).delete()
 
-            return redirect(next)
+        # ClubInvitationsView - Logic for all other users receiving invitations
+        else:
+            # Accepted/Declined
+            accepted_club_id = request.POST.get("accepted")
+            declined_club_id = request.POST.get("declined")
+
+            if accepted_club_id:
+                pass
+
+            if declined_club_id:
+                ClubInvitation.objects.filter(user__username=request.user.username, club=viewed_club).delete()
+
+        return redirect(next)
 
 
 class SettingsView(View):
