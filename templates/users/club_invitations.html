@@ -30,7 +30,8 @@
     </div>
 
     <!-- Accept modal window -->
-    <form method="POST">
+    <form method="POST"
+        action="{% url 'handle-invite' username=request.user.username club_slug=invitation.club.slug %}">
         {% csrf_token %}
         <div class="modal fade" id="accept{{ invitation.club.pk }}" tabindex="-1"
             aria-labelledby="Accept Club Invitation" aria-hidden="true">

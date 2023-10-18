@@ -350,13 +350,24 @@ def handle_invitation(request, username, club_slug):
 
         # ClubInvitationsView - Logic for all other users receiving invitations
         else:
-            # Accepted/Declined
             accepted_club_id = request.POST.get("accepted")
             declined_club_id = request.POST.get("declined")
 
+            # Add user to members of the club
             if accepted_club_id:
-                pass
+                club = get_object_or_404(Club, pk=accepted_club_id)
 
+                MembersInClub.objects.create(
+                member=request.user,
+                club_name=club
+            )
+                
+                # Change ClubInvitation.accepted to True
+                club_invitation = get_object_or_404(ClubInvitation, club=club, user=request.user)
+                club_invitation.accepted = True
+                club_invitation.save()
+
+            # Delete the ClubInvitation object
             if declined_club_id:
                 ClubInvitation.objects.filter(user__username=request.user.username, club=viewed_club).delete()
 

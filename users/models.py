@@ -87,7 +87,7 @@ class Club(models.Model):
 class MembersInClub(models.Model):
     date_joined = models.DateTimeField(auto_now_add=True)
     member = models.ForeignKey(User, on_delete=models.CASCADE)
-    club_name = models.ForeignKey(Club, on_delete=models.CASCADE)
+    club_name = models.ForeignKey(Club, on_delete=models.CASCADE) ## NOTES: Fix this - it is club, not club_name
 
     class Meta:
         unique_together = ["member", "club_name"]
