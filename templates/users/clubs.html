@@ -2,6 +2,19 @@
 <div class="container g-0 text-warning">
     <!-- Displays all clubs the user is a member of -->
     <div class="row">
+        <div class="row mt-2 text-center">
+            <div class="col">
+                {% if request.user.username in request.path %}
+                <h2>
+                    Your Clubs
+                </h2>
+                {% else %}
+                <h2>
+                    {{ viewed_profile.user }}'s Clubs
+                </h2>
+                {% endif %}
+            </div>
+        </div>
         {% for club in viewed_clubs %}
         <div class="col-4 g-1 text-center">
             <div class="row">

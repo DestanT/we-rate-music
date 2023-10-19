@@ -1,6 +1,19 @@
 {% extends "base.html" %} {% block content %}
 <div class="container g-0 text-warning">
     <div class="row">
+        <div class="row">
+            <div class="col mt-2 text-center">
+                {% if request.user.username in request.path %}
+                <h2>
+                    Your Playlists
+                </h2>
+                {% else %}
+                <h2>
+                    {{ viewed_profile.user }}'s Playlists
+                </h2>
+                {% endif %}
+            </div>
+        </div>
         {% for playlist in viewed_playlists %}
         <div class="col-4 g-1">
             <a
