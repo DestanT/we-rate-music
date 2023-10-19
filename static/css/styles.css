@@ -18,6 +18,8 @@ header>div>img {
 .img-thumbnail {
     padding: 0;
     border: var(--bs-border-width) solid #F7CB45;
+    width: 33vw;
+    height: 33vw;
 }
 
 /* JavaScript Controls */

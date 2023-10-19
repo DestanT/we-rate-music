@@ -1,25 +1,41 @@
 {% extends "base.html" %} {% block content %}
 <div class="container g-0 text-warning">
+    <!-- Displays all clubs the user is a member of -->
     <div class="row">
-        <!-- Displays all clubs the user is a member of -->
         {% for club in viewed_clubs %}
         <div class="col-4 g-1 text-center">
-            <a href="{% url 'club_details' username=viewed_profile.user.username club_slug=club.slug %}">
-                <img src="{{ club.club_image }}" class="img-thumbnail" alt="Image for {{ club.club_name }}'s club'">
-            </a>
-            {{ club.club_name }}
+            <div class="row">
+                <div class="col-12">
+                    <a href="{% url 'club_details' username=viewed_profile.user.username club_slug=club.slug %}">
+                        <img src="{{ club.club_image }}" class="img-thumbnail"
+                            alt="Image for {{ club.club_name }}'s club'">
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {{ club.club_name }}
+                </div>
+            </div>
         </div>
         {% endfor %}
 
         <!-- Create a new Club button -->
         {% if request.user == viewed_profile.user %}
-        <div class="col-4">
-            <br>
-            <button class="btn btn-outline-warning" type="button" data-bs-toggle="modal" data-bs-target="#addClubModal">
-                <span>&#43;</span>
-                <br>
-                Add Club
+        <div class="col-4 g-1 text-center">
+            <button class="btn btn-outline-warning img-thumbnail" type="button" data-bs-toggle="modal"
+                data-bs-target="#addClubModal">
+                <div class="row">
+                    <div class="col-12">
+                        <span style="font-size: 3em;">&#43;</span>
+                    </div>
+                </div>
             </button>
+            <div class="row">
+                <div class="col-12">
+                    Add Club
+                </div>
+            </div>
         </div>
         {% endif %}
 
@@ -51,6 +67,7 @@
                 </div>
             </div>
         </form>
+
     </div>
 </div>
 {% endblock content %}
