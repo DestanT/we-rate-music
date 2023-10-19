@@ -22,6 +22,10 @@ header>div>img {
     height: 33vw;
 }
 
+.sticky-top {
+    top: 10px;
+}
+
 /* JavaScript Controls */
 
 .hidden {
@@ -77,16 +81,13 @@ nav img {
     color: #F7CB45;
 }
 
-/* Playlists */
+/* Discover View */
 
-#user-playlists .col-4 {
-    width: 33vw;
-    height: 33vw;
-    margin: 0.5px;
+#user-search-box::placeholder {
+    color: rgba(var(--bs-warning-rgb),var(--bs-text-opacity))!important;
+    opacity: .75!important;
 }
 
-/* TEST */
-
-.box {
-    border: solid black 2px;
+.opacity-90 {
+    opacity: .90!important;
 }

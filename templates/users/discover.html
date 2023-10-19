@@ -1,20 +1,19 @@
 {% extends "base.html" %} {% block content %}
-<div class="container text-warning">
-    <div class="row g-2">
-        <div class="dropdown fixed-top">
-            <input type="text" id="user-search-box" class="form-control dropdown-toggle"
+<div class="container g-0 text-warning">
+    <div class="row sticky-top">
+        <div class="dropdown">
+            <input type="text" id="user-search-box" class="form-control dropdown-toggle bg-dark text-warning"
                 placeholder="Discover new users" data-bs-toggle="dropdown" role="searchbox">
-            <ul class="dropdown-menu opacity-75 bg-dark" id="live-search-items">
+            <ul class="dropdown-menu dropdown-menu-dark form-control opacity-90 text-opacity-100"
+                id="live-search-items">
                 <!-- JavaScript <li> injected here -->
                 <li></li>
             </ul>
         </div>
     </div>
-</div>
-<div class="container mt-5">
     <div class="row">
         {% for playlist in playlist_list %}
-        <div class="col-4 g-1 text-warning">
+        <div class="col-4 g-1">
             <a href="{% url 'playlist_details' username=playlist.user.username playlist_id=playlist.id %}">
                 <img src="{{ playlist.playlist_image.url }}" class="img-thumbnail"
                     alt="Playlist cover image for {{ playlist.playlist_name }} - Taken from Spotify">
@@ -45,10 +44,10 @@
             if (filteredArray.length > 0) {
                 filteredArray.map(user => {
                     // JS template literals don't work in Django URLs - this is a crude attempt, but works
-                    searchResults.innerHTML += `<li><a href="/profile/${user}/playlists" class="dropdown-item opacity-100 text-warning">${user}</a></li><br>`
+                    searchResults.innerHTML += `<li><a href="/profile/${user}/playlists" class="dropdown-item text-warning">${user}</a></li><br>`
                 });
             } else {
-                searchResults.innerHTML = "<li class='dropdown-item opacity-100 text-warning'>No results found...</li>"
+                searchResults.innerHTML = "<li class='dropdown-item text-warning'>No results found...</li>"
             };
         };
     });
