@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
+from django.urls import reverse
 from django.views.generic import TemplateView, ListView
 from django.core.cache import cache
+from django.contrib.auth.views import LoginView
 from .models import UserProfile, Playlist, Track, Club, MembersInClub, ClubInvitation
 from .forms import UserSettingsForm, ClubForm, ClubInvitationForm
 from cloudinary.uploader import upload
@@ -28,6 +30,14 @@ def get_base_template_data(request, **kwargs):
 
 class HomepageView(TemplateView):
     template_name = "base.html"
+
+
+class CustomLoginView(LoginView):
+    template_name = "account/login.html"
+
+    def get_success_url(self):
+        username = self.request.user
+        return reverse("profile_playlists", args=[username])
 
 
 class ProfilePlaylistsView(View):
