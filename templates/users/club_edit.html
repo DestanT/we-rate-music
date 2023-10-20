@@ -1,30 +1,41 @@
 {% extends "users/club_details.html" %} {% block club_edit %}
 <div class="container g-0 mt-2 text-warning">
     <div class="row d-flex align-items-center">
-        <div class="col-12 p-3">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" value="invite">
-            </form>
-        </div>
-        <div class="col-12 p-3 mb-5">
-            <h4>Pending Invites</h4>
-            <ol>
+
+        <!-- Display pending invites - if they exist -->
+        {% if invited_members %}
+        <div class="col-12 p-3 mb-3">
+            <h5>Pending Invites:</h5>
+            <ul>
                 {% for invited in invited_members %}
                 <li>
-                    {{ invited.user }}
-                    <form method="post"
-                        action="{% url 'handle-invite' username=invited.user club_slug=invited.club.slug %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="username" value="{{ invited.user }}">
-                        <input type="hidden" name="next" value="{{ request.path }}">
-                        <button type="submit" class="btn btn-outline-warning"><span class="fa-solid fa-ban"
-                                style="color: #ff0000;"></span></button>
-                    </form>
+                    <div class="row">
+                        <div class="col-10">
+                            {{ invited.user }}
+                        </div>
+                        <div class="col-2">
+                            <form method="post"
+                                action="{% url 'handle-invite' username=invited.user club_slug=invited.club.slug %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="username" value="{{ invited.user }}">
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <button type="submit" class="btn btn-outline-warning"><span class="fa-solid fa-ban"
+                                        style="color: #ff0000;"></span></button>
+                            </form>
+                        </div>
+                    </div>
                 </li>
                 {% endfor %}
-            </ol>
+            </ul>
+        </div>
+        {% endif %}
+        <div class="col-12 p-3">
+            <h5>Invite Members:</h5>
+            <form method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="invite">
+            </form>
         </div>
     </div>
 </div>
