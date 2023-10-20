@@ -30,13 +30,6 @@ class HomepageView(TemplateView):
     template_name = "base.html"
 
 
-# class CustomLoginView(LoginView):
-#     print("Hello")
-#     def get_success_url(self):
-#         username = self.request.user.get_username()
-#         return reverse("profile_playlists", kwargs={"username": username})
-
-
 class ProfilePlaylistsView(View):
     def get(self, request, *args, **kwargs):
         base_template_data = get_base_template_data(self, **kwargs)
@@ -162,24 +155,31 @@ class AddPlaylistsView(View):
 
 class DiscoverView(ListView):
     model = Playlist
-    queryset = Playlist.objects.all()
     template_name = "users/discover.html"
 
-    # Overwrites get_context_data method
+    # Context needed to display page
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Get details for username in the dynamic URL
-        viewed_profile = get_object_or_404(UserProfile, user__username=self.kwargs.get("username"))
-        viewed_playlists = Playlist.objects.filter(user=viewed_profile.user)
+        # Base template data
+        base_template_data = get_base_template_data(self, **kwargs)
 
-        # Get all users from UserProfile model
-        all_users = UserProfile.objects.all()
-        users_list = [user.user.username for user in all_users]
+        # Get all UserProfile objects
+        all_user_objects = UserProfile.objects.all()
 
-        context["viewed_profile"] = viewed_profile
-        context["viewed_playlists"] = viewed_playlists
-        context["users_list"] = users_list
+        # URL to placeholder profile image on Cloudinary
+        placeholder = "https://res.cloudinary.com/dxgzepuov/image/upload/v1694805348/we-rate-music/placeholder-user_swscgw.png"
+
+        users_data = [
+            {
+                "username": user.user.username,
+                "profile_image": user.profile_image.url if user.profile_image else placeholder
+            }
+            for user in all_user_objects
+        ]
+
+        context["viewed_profile"] = base_template_data["viewed_profile"]
+        context["users_data"] = users_data
 
         return context
 

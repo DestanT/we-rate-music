@@ -91,3 +91,10 @@ nav img {
 .opacity-90 {
     opacity: .90!important;
 }
+
+.searched-profile-picture {
+    height: 50px;
+    width: 50px;
+    border-radius: 20%;
+    border: 2px solid #F7CB45;
+}
