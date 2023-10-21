@@ -7,6 +7,7 @@
 3. [Django Apps](#django-apps)
    - [Users](#users)
    - [Clubs](#clubs)
+   - [Seasons](#seasons)
 4. [Features:](#features)
    - [Spotify API](#spotify-api)
    - [User Profile](#user-profile)
@@ -26,33 +27,57 @@
 
 ## **Introduction**
 
-Intro paragraph
+We Rate Music was inspired by a group of friends and a WhatsApp group. We all enjoy listening to music and spend variying amounts of time discussing the importance of music in our lives, and the lives of human beings more generally.
 
-To access the application, visit the Heroku app [**here**](LINK).
+The best way to explain what We Rate Music is, is that it is a "book club" for music; we each curate one playlist based on a set of rules that we discuss beforehand. Basic examples from the past include, "Best for studying" or "Best for a gym workout". And more interesting rulesets such as making a playlist where each chosen song must have an artist featured in the previous chosen song, with the first song of the playlist being a free choice.
+
+Everyone within the WhatsApp group is chosen at random one by one to make their submission and we all have a set period of time to listen to the submitted playlist and rate it out of 10, based on how much we enjoyed it and how well it adhered to the rules given. The scores are arbitrary, but are averaged out for every submission and we have a leaderboard as to who scored the highest in each "Season" (Seasons being the different rulesets).
+
+For some of us it is about chasing a higher score than your fellow friends, and for some of us it is a way to listen to new songs, that you perhaps wouldn't have listened to otherwise.
+
+The application tries to mimic this as best as possible, so keep this in mind when using it. It isn't meant to replace Spotify or make it "better" in any way shape or form.
+
+To access the application, visit the Heroku app [**here**](https://we-rate-music-6240e7e17326.herokuapp.com/).
 
 ## **Goals**
 
-We Rate Music aims to bring users together for their music tastes. The application also allows users to form groups and from within their groups submit playlists. Members of groups should commit to listening to the submitted playlists and rate them accordingly.
+The current goals of the app are simple: to replace a WhatsApp group and a clumsy attempt at keeping past scores and submissions on an excel spreadsheet.
+
+In the future of the app I would like to see more and more users use it for the same purpose that me and my friends use it for. I would like to expand the app in a way where users outside of their Club "bubbles" can follow other users they've discovered purely based on their music tastes. And perhaps even have Club on Club competitions, where submissions are anonymous until the very end.
 
 ## **Django Apps**
 
+Though the apps primary features are detailed [**below**](#features), here is a quick overview on the Django file structure that is used and an overview on what the different apps do in the grand scheme of We Rate Music.
+
 ### **Users**
 
-- models
-- views
+The "Users" application houses all the logic to add playlists (using the Spotify API) to a user's profile, view and discover new playlists of other users on the application. Users can also add/update their profile and background pictures, as well as add their Spotify username information to be able to initiate a search for their public playlists on Spotify.
 
 ### **Clubs**
 
-- models
-- views
+The "Clubs" application has all the logic to create, view, edit and delete clubs. Within clubs, users can invite members to be a part of their club. Invitations are displayed on users profiles and can be accepted or rejected.
+
+### **Seasons**
+
+Within the "Seasons" application, founders of clubs can create seasons by entering a season title and a short description of what the season theme is. It is within this Django application where users can rate the playlists of their fellow club members and view what playlists were a part of which season.
 
 ## **Features**
 
 ### **Spotify API**
 
+Public Spotify playlists of a user can be searched and added to their "We Rate Music" profile. The API is currently limited to this information:
+
+- Playlist name
+- Playlist album cover image
+- Track names within the playlist
+
+As the app grows I would like to include far more utility around the Spotify API, more information on what is on the roadmap can be found [**here**](#future-featuresroadmap).
+
+Users must add their Spotify username to use this feature (found within the accounts tab in their Spotify app/web app). As this feature is an integral part of using the "We Rate Music" app, users without at least a free Spotify account will not be able to use it effectively.
+
 ### **User Profile**
 
-- follow
+Users can sign-up to the application using a username (must be unique) and password.
 
 ### **Settings**
 
@@ -211,3 +236,9 @@ Thank you for your interest in the project, and I look forward to any contributi
 <!-- CHECK ALL TEMPLATES FOR COMMENTS - ARE ALL STYLE SHEETS NEEDED FOR EXAMPLE - DELETE UNNEEDED ONES -->
 <!-- Separate scripts in all templates into block scripts and add it to base.html -->
 <!-- I have 2 env files, why? -->
+
+<!-- Questions for Brian -->
+
+1. Should I split the apps into their groups; Users, Clubs, Seasons or something alike? Or leave it all in one place?
+2. Do I need to worry about the overuse of django "View", should I try to branch out more into CreateView, UpdateView for example?
+3. Is my current ReadMe okay in terms of content direction and format?
