@@ -27,23 +27,21 @@
 
 ## **Introduction**
 
-We Rate Music was inspired by a group of friends and a WhatsApp group. We all enjoy listening to music and spend variying amounts of time discussing the importance of music in our lives, and the lives of human beings more generally.
+We Rate Music is a "book club" for music. Inspired by a group of friends and their WhatsApp group. We all enjoy listening to music and spend variying amounts of time discussing the importance of music in our lives, and in the lives of human beings more generally.
 
-The best way to explain what We Rate Music is, is that it is a "book club" for music; we each curate one playlist based on a set of rules that we discuss beforehand. Basic examples from the past include, "Best for studying" or "Best for a gym workout". And more interesting rulesets such as making a playlist where each chosen song must have an artist featured in the previous chosen song, with the first song of the playlist being a free choice.
+Users can form clubs with their friends and within their own clubs create custom themed "seasons". Each season will have a short description, describing what the rules for the season are. Some examples of this may include; "Best for studying" or "Best for a gym workout". Or more interestingly; "each chosen song within the playlist must have an artist featured in the previous chosen song, with the first song being a free choice".
 
-Everyone within the WhatsApp group is chosen at random one by one to make their submission and we all have a set period of time to listen to the submitted playlist and rate it out of 10, based on how much we enjoyed it and how well it adhered to the rules given. The scores are arbitrary, but are averaged out for every submission and we have a leaderboard as to who scored the highest in each "Season" (Seasons being the different rulesets).
-
-For some of us it is about chasing a higher score than your fellow friends, and for some of us it is a way to listen to new songs, that you perhaps wouldn't have listened to otherwise.
-
-The application tries to mimic this as best as possible, so keep this in mind when using it. It isn't meant to replace Spotify or make it "better" in any way shape or form.
+Club members are prompted to make their submissions and the app will roll out the playlists, with their respective spotify links, one by one to its members to listen to and rate out of 10. Once all ratings are gathered the next playlist will be featured.
 
 To access the application, visit the Heroku app [**here**](https://we-rate-music-6240e7e17326.herokuapp.com/).
 
 ## **Goals**
 
-The current goals of the app are simple: to replace a WhatsApp group and a clumsy attempt at keeping past scores and submissions on an excel spreadsheet.
+The primary goals are to replace manual clumsy attempts at keeping past scores and submissions on an excel spreadsheet, and to create a thriving community of users who also enjoy curating playlists and listening to music. In the future, we envision:
 
-In the future of the app I would like to see more and more users use it for the same purpose that me and my friends use it for. I would like to expand the app in a way where users outside of their Club "bubbles" can follow other users they've discovered purely based on their music tastes. And perhaps even have Club on Club competitions, where submissions are anonymous until the very end.
+- Expanding the user base and allowing users to form connections with one another based on their shared music tastes.
+- Facilitating Club-on-Club competitions with anonymous submissions and ratings until the very end.
+- Further intregration of the Spotify API to enhance parameters and thus set better recommendations between users.
 
 ## **Django Apps**
 
@@ -51,15 +49,27 @@ Though the apps primary features are detailed [**below**](#features), here is a 
 
 ### **Users**
 
-The "Users" application houses all the logic to add playlists (using the Spotify API) to a user's profile, view and discover new playlists of other users on the application. Users can also add/update their profile and background pictures, as well as add their Spotify username information to be able to initiate a search for their public playlists on Spotify.
+The "Users" application allows users to:
+
+- Add their public Spotify playlists to their "We Rate Music" profile.
+- Discover and explore playlists shared by other users.
+- Personalise their profiles with a profile picture, a background picture for their profile and their Spotify username information.
 
 ### **Clubs**
 
-The "Clubs" application has all the logic to create, view, edit and delete clubs. Within clubs, users can invite members to be a part of their club. Invitations are displayed on users profiles and can be accepted or rejected.
+The "Clubs" application serves users with all club-related features:
+
+- Create, view, edit, and delete clubs.
+- Invite members.
+- Handle invitations displayed on users' profiles.
 
 ### **Seasons**
 
-Within the "Seasons" application, founders of clubs can create seasons by entering a season title and a short description of what the season theme is. It is within this Django application where users can rate the playlists of their fellow club members and view what playlists were a part of which season.
+Within the "Seasons" application, club founders can:
+
+- Create seasons with a short description for rules of the season.
+- Collect and display playlists from its club members.
+- Enable members to rate playlists, with the results tracked and averaged for each playlist in each season.
 
 ## **Features**
 
@@ -67,34 +77,67 @@ Within the "Seasons" application, founders of clubs can create seasons by enteri
 
 Public Spotify playlists of a user can be searched and added to their "We Rate Music" profile. The API is currently limited to this information:
 
-- Playlist name
-- Playlist album cover image
-- Track names within the playlist
+- Playlist name.
+- Playlist album cover image.
+- Track names within the playlist.
 
 As the app grows I would like to include far more utility around the Spotify API, more information on what is on the roadmap can be found [**here**](#future-featuresroadmap).
 
-Users must add their Spotify username to use this feature (found within the accounts tab in their Spotify app/web app). As this feature is an integral part of using the "We Rate Music" app, users without at least a free Spotify account will not be able to use it effectively.
+Users must add their Spotify username to use this feature (found within the accounts tab in their Spotify app/web app). As this feature is an integral part of using the "We Rate Music" app, users without at least a free Spotify account will not be able to use "We Rate Music" effectively .
 
 ### **User Profile**
 
-Users can sign-up to the application using a username (must be unique) and password.
+Users can sign-up to the application using a unique username and password.
 
 ### **Settings**
 
-- profile/background image
-- user id for Spotify
+Within the "Settings" tab in user profiles, users can:
+
+- Customise user profiles with profile/background pictures.
+- Add their Spotify username information.
 
 ### **User Stats**
 
+Coming soon...
+
 ### **Discover Playlists**
 
-- search users
+Within the "Discover" view users can:
+
+- Explore other users' playlists.
+- Search for other users and view their profiles.
 
 ### **View/Create Clubs**
 
+This feature allows users to:
+
+- Create clubs.
+- Invite members.
+<!-- NOT YET ADDED -->
+- Create seasons with a text descriptive theme.
+- Rate other members' playlists within seasons.
+- View past seasons, playlist submissions and respective ratings.
+
 ### **Add Playlists**
 
+Users can use the Spotify API to:
+
+- Add their public Spotify playlists to their "We Rate Music" profile.
+<!-- NOT YET ADDED -->
+- Remove playlists from their profiles.
+
 ## **Future Features/Roadmap**
+
+The roadmap includes:
+
+- Enhanced Spotify API integration for a better user experience, such as the inclusion of genre information on tracks within playlists. This will enable the app to better pinpoint user genre preferences and allow other users to see this information on each others profiles.
+- Support for club-on-club competitions; with anonymous submissions and scoring right up until the end, users can be excited to see which club curated the better playlists on average for the chosen season.
+- User-Follow functionality; allowing users to stay connected to other users based on their ability to curate music and their music taste.
+- Comments section for playlists, to allow users to express their thoughts and feelings on playlists.
+- Season voting system; club founders can propose a few season/rules to their members and members can vote on which season goes next.
+- Join season feature; giving members more flexibility to join or skip a season.
+- More control for clubs; founders can kick members and urge them to hasten up their submissions.
+- User-Statistics tab: for a more advanced view on each user's genre preference, average ratings given, amount of seasons completed etc.
 
 ## **Testing**
 
