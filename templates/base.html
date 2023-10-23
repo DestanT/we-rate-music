@@ -80,7 +80,8 @@
                             <div class="col-3">
                                 <a href="{% url 'profile_playlists' username=viewed_profile.user.username %}">
                                     {% if viewed_profile.profile_image %}
-                                    <img src="{{ viewed_profile.profile_image.url }}" alt="User's Profile Image"
+                                    <img src="{{ viewed_profile.profile_image.url }}"
+                                        alt="{{ viewed_profile.user.username }}'s Profile Image"
                                         class="profile-picture">
                                     {% else %}
                                     <img src="https://res.cloudinary.com/dxgzepuov/image/upload/v1694805348/we-rate-music/placeholder-user_swscgw.png"
@@ -102,7 +103,11 @@
                                             </div>
                                         </div>
                                         <div class="col-4">
-                                            <button type="button" class="btn btn-outline-warning">Follow</button>
+                                            <button type="button" class="btn btn-outline-warning">
+                                                <a href="{% url 'club-invitations' username=request.user.username %}">
+                                                    Notifications
+                                                </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -128,9 +133,8 @@
 
         </div>
         {% endif %}
-        <br>
 
-        <div class="container g-0">
+        <div class="container">
             {% block content %}
             <!-- Content goes here -->
             {% endblock content %}
